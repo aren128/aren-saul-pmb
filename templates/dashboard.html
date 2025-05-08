@@ -1,0 +1,125 @@
+<!-- filepath: c:\Users\GC\OneDrive\Dokumen\New folder (2)\app\templates\dashboard.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Dashboard Siswa</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Menu</h4>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('user_dashboard') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+                <a href="{{ url_for('registration_form') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-edit me-2"></i> Formulir Pendaftaran
+                </a>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-primary text-white">
+                <h4>Status Pendaftaran</h4>
+            </div>
+            <div class="card-body">
+                {% if registration %}
+                    {% if registration.status == 'pending' %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-clock me-2"></i> Menunggu Persetujuan
+                    </div>
+                    {% elif registration.status == 'approved' %}
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i> Selamat! Pendaftaran Anda telah disetujui.
+                    </div>
+                    {% elif registration.status == 'rejected' %}
+                    <div class="alert alert-danger">
+                        <i class="fas fa-times-circle me-2"></i> Maaf, pendaftaran Anda ditolak.
+                    </div>
+                    {% endif %}
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> Anda belum mengisi formulir pendaftaran.
+                </div>
+                <a href="{{ url_for('registration_form') }}" class="btn btn-primary">Isi Formulir</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Informasi Pendaftaran</h4>
+            </div>
+            <div class="card-body">
+                {% if registration %}
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th width="30%">Nama Lengkap</th>
+                            <td>{{ registration.full_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Lahir</th>
+                            <td>{{ registration.birth_date.strftime('%d-%m-%Y') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Jenis Kelamin</th>
+                            <td>{{ registration.gender }}</td>
+                        </tr>
+                        <tr>
+                            <th>Alamat</th>
+                            <td>{{ registration.address }}</td>
+                        </tr>
+                        <tr>
+                            <th>No. Telepon</th>
+                            <td>{{ registration.phone }}</td>
+                        </tr>
+                        <tr>
+                            <th>Asal Sekolah</th>
+                            <td>{{ registration.previous_school }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nama Orang Tua</th>
+                            <td>{{ registration.parent_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>No. Telepon Orang Tua</th>
+                            <td>{{ registration.parent_phone }}</td>
+                        </tr>
+                        <tr>
+                            <th>Pekerjaan Orang Tua</th>
+                            <td>{{ registration.parent_occupation }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal Daftar</th>
+                            <td>{{ registration.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                {% if registration.status == 'pending' %}
+                                <span class="badge bg-warning">Menunggu</span>
+                                {% elif registration.status == 'approved' %}
+                                <span class="badge bg-success">Diterima</span>
+                                {% elif registration.status == 'rejected' %}
+                                <span class="badge bg-danger">Ditolak</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> Anda belum mengisi formulir pendaftaran.
+                </div>
+                <a href="{{ url_for('registration_form') }}" class="btn btn-primary">Isi Formulir</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

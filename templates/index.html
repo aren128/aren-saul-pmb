@@ -1,0 +1,81 @@
+<div class="jumbotron">
+    <h1 class="display-4">Selamat Datang di PMB Sekolah Sederhana</h1>
+    <p class="lead">Sistem Penerimaan Murid Baru untuk masa depan pendidikan yang lebih baik.</p>
+    <hr class="my-4">
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Panduan Pendaftaran Siswa Baru</h4>
+            </div>
+            <div class="card-body">
+                <h5>Langkah-langkah Pendaftaran:</h5>
+                <div class="steps mt-4">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h5>Registrasi Akun</h5>
+                            <p>Buat akun baru dengan mengklik tombol "Register" dan isi data yang diperlukan.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h5>Login ke Akun</h5>
+                            <p>Masuk ke sistem menggunakan username dan password yang telah dibuat.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h5>Isi Formulir Pendaftaran</h5>
+                            <p>Lengkapi semua informasi yang diperlukan pada formulir pendaftaran.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h5>Cek Status Pendaftaran</h5>
+                            <p>Pantau status pendaftaran Anda melalui dashboard siswa.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4>Informasi Penting</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <i class="fas fa-calendar-alt text-primary me-2"></i> Pendaftaran dibuka sepanjang tahun
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-check-circle text-primary me-2"></i> Hasil seleksi akan diumumkan melalui sistem
+                    </li>
+                    <li class="list-group-item">
+                        <i class="fas fa-info-circle text-primary me-2"></i> Pastikan data yang diisi sudah benar
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header bg-success text-white">
+                <h4>Mulai Sekarang</h4>
+            </div>
+            <div class="card-body text-center">
+                {% if not session.get('user_id') %}
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg mb-2">Register</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg">Login</a>
+                {% else %}
+                <a href="{{ url_for('user_dashboard') }}" class="btn btn-primary btn-lg">Dashboard Saya</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

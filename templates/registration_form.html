@@ -1,0 +1,72 @@
+<!-- filepath: c:\Users\GC\OneDrive\Dokumen\New folder (2)\app\templates\registration_form.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4>Formulir Pendaftaran Siswa Baru</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('register_student') }}">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="full_name" class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="full_name" name="full_name" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="birth_date" class="form-label">Tanggal Lahir</label>
+                    <input type="date" class="form-control" id="birth_date" name="birth_date" required>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="gender" class="form-label">Jenis Kelamin</label>
+                    <select class="form-select" id="gender" name="gender" required>
+                        <option value="">-- Pilih --</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="phone" class="form-label">No. Telepon</label>
+                    <input type="text" class="form-control" id="phone" name="phone" required>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="address" class="form-label">Alamat Lengkap</label>
+                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="previous_school" class="form-label">Asal Sekolah</label>
+                <input type="text" class="form-control" id="previous_school" name="previous_school" required>
+            </div>
+            
+            <hr>
+            <h5>Data Orang Tua</h5>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="parent_name" class="form-label">Nama Orang Tua</label>
+                    <input type="text" class="form-control" id="parent_name" name="parent_name" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="parent_phone" class="form-label">No. Telepon Orang Tua</label>
+                    <input type="text" class="form-control" id="parent_phone" name="parent_phone" required>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="parent_occupation" class="form-label">Pekerjaan Orang Tua</label>
+                <input type="text" class="form-control" id="parent_occupation" name="parent_occupation" required>
+            </div>
+            
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">Kirim Formulir</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
