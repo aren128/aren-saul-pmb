@@ -46,7 +46,10 @@ def admin_dashboard():
 def user_dashboard():
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
-    return render_template('dashboard.html')
+        
+    # Get registration data for current user
+    registration = Registration.query.filter_by(user_id=session['user_id']).first()
+    return render_template('dashboard.html', registration=registration)
 
 @app.route('/registration_form')
 def registration_form():
@@ -93,7 +96,7 @@ def register_student():
             db.session.commit()
             
             flash('Pendaftaran berhasil dikirim!', 'success')
-            return redirect(url_for('user_dashboard'))
+            return redirect(url_for('user_dashboard'))  # This will show the info in dashboard
             
         except Exception as e:
             flash(f'Error: {str(e)}', 'danger')
