@@ -60,6 +60,7 @@ def registration_form():
 @app.route('/register_student', methods=['POST'])
 def register_student():
     if 'user_id' not in session:
+        flash('Silakan login terlebih dahulu!', 'warning')
         return redirect(url_for('auth.login'))
         
     if request.method == 'POST':
@@ -95,11 +96,11 @@ def register_student():
             db.session.add(new_registration)
             db.session.commit()
             
-            flash('Pendaftaran berhasil dikirim!', 'success')
-            return redirect(url_for('user_dashboard'))  # This will show the info in dashboard
+            flash('Pendaftaran berhasil dikirim! Silakan pantau status pendaftaran Anda.', 'success')
+            return redirect(url_for('user_dashboard'))
             
         except Exception as e:
-            flash(f'Error: {str(e)}', 'danger')
+            flash(f'Terjadi kesalahan: {str(e)}', 'danger')
             return redirect(url_for('registration_form'))
 
 # Add routes for approve/reject functionality

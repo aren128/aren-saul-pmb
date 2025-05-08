@@ -34,3 +34,52 @@
         font-size: 2rem;
     }
 }
+
+/* Notification Styles */
+.alert {
+    border: none;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    animation: slideIn 0.5s ease-out;
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border-left: 4px solid #198754;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #842029;
+    border-left: 4px solid #dc3545;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #664d03;
+    border-left: 4px solid #ffc107;
+}
+
+.alert-info {
+    background-color: #cff4fc;
+    color: #055160;
+    border-left: 4px solid #0dcaf0;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.alert-dismissible .btn-close {
+    padding: 1.25rem;
+}

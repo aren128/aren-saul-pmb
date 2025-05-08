@@ -7,7 +7,7 @@
         <h4>Formulir Pendaftaran Siswa Baru</h4>
     </div>
     <div class="card-body">
-        <form method="POST" action="{{ url_for('register_student') }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ url_for('register_student') }}" enctype="multipart/form-data" id="registrationForm">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="full_name" class="form-label">Nama Lengkap</label>
@@ -75,9 +75,21 @@
             </div>
             
             <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary">Kirim Formulir</button>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <i class="fas fa-paper-plane me-2"></i>Kirim Formulir
+                </button>
             </div>
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    var submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Mengirim...';
+});
+</script>
 {% endblock %}

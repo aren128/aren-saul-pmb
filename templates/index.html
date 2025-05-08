@@ -155,10 +155,14 @@
             </div>
             <div class="card-body text-center">
                 {% if not session.get('user_id') %}
-                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg mb-2">Register</a>
-                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg">Login</a>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg mb-2">Register</a>
+                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg">Login</a>
+                {% elif session.get('role') == 'admin' %}
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-danger btn-lg">
+                        <i class="fas fa-lock me-2"></i>Admin Dashboard
+                    </a>
                 {% else %}
-                <a href="{{ url_for('user_dashboard') }}" class="btn btn-primary btn-lg">Dashboard Saya</a>
+                    <a href="{{ url_for('user_dashboard') }}" class="btn btn-primary btn-lg">Dashboard Saya</a>
                 {% endif %}
             </div>
         </div>
