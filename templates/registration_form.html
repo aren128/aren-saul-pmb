@@ -7,7 +7,7 @@
         <h4>Formulir Pendaftaran Siswa Baru</h4>
     </div>
     <div class="card-body">
-        <form method="POST" action="{{ url_for('register_student') }}">
+        <form method="POST" action="{{ url_for('register_student') }}" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="full_name" class="form-label">Nama Lengkap</label>
@@ -42,6 +42,17 @@
             <div class="mb-3">
                 <label for="previous_school" class="form-label">Asal Sekolah</label>
                 <input type="text" class="form-control" id="previous_school" name="previous_school" required>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="ijazah" class="form-label">Upload Ijazah (PDF/JPG)</label>
+                    <input type="file" class="form-control" id="ijazah" name="ijazah" accept=".pdf,.jpg,.jpeg" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="foto" class="form-label">Upload Pas Foto (JPG/PNG)</label>
+                    <input type="file" class="form-control" id="foto" name="foto" accept=".jpg,.jpeg,.png" required>
+                </div>
             </div>
             
             <hr>
