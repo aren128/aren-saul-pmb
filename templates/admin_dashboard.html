@@ -38,6 +38,9 @@
                             <span class="badge bg-warning">Menunggu</span>
                             {% elif reg.status == 'approved' %}
                             <span class="badge bg-success">Diterima</span>
+                            {% if reg.payment_status != 'paid' %}
+                            <small class="d-block">Belum Lunas</small>
+                            {% endif %}
                             {% elif reg.status == 'rejected' %}
                             <span class="badge bg-danger">Ditolak</span>
                             {% endif %}
@@ -57,9 +60,15 @@
                                 <a href="{{ url_for('view_registration', id=reg.id) }}" class="btn btn-sm btn-info">
                                     <i class="fas fa-eye me-1"></i>Detail
                                 </a>
-                                {% if reg.payment_status == 'pending' %}
-                                <button type="button" class="btn btn-sm btn-success" onclick="showPaymentModal({{ reg.id }})">
-                                    <i class="fas fa-money-bill me-1"></i>Verifikasi Pembayaran
+                                {% if reg.status == 'pending' %}
+                                <form method="POST" action="{{ url_for('update_status', reg_id=reg.id) }}" class="d-inline">
+                                    <input type="hidden" name="status" value="approved">
+                                    <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('Yakin ingin menerima pendaftaran ini?')">
+                                        <i class="fas fa-check me-1"></i>Terima
+                                    </button>
+                                </form>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="showRejectModal({{ reg.id }})">
+                                    <i class="fas fa-times me-1"></i>Tolak
                                 </button>
                                 {% endif %}
                             </div>

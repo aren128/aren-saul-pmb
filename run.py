@@ -26,6 +26,9 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Register the auth blueprint
 app.register_blueprint(auth, url_prefix='/auth')
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/')
 @app.route('/home')
 def home():
@@ -166,42 +169,146 @@ def update_status(reg_id):
     status = request.form.get('status')
     
     if status in ['approved', 'rejected']:
+        # Update registration status
         registration.status = status
         registration.updated_at = datetime.utcnow()
         
         # Create notification message
         if status == 'approved':
-            message = "Selamat! Pendaftaran Anda telah diterima."
+            message = ("Selamat! Pendaftaran Anda telah diterima.\n"
+                      "Silakan melakukan pembayaran untuk menyelesaikan proses pendaftaran.\n"
+                      "Anda dapat melakukan pembayaran melalui menu Pembayaran.")
             category = "success"
         else:
             reason = request.form.get('reason')
             custom_reason = request.form.get('customReason')
-            
-            # Get the final reason text
-            if reason == 'custom':
-                final_reason = custom_reason
-            else:
-                final_reason = reason
-                
+            final_reason = custom_reason if reason == 'custom' else reason
             message = f"Maaf, pendaftaran Anda ditolak. Alasan: {final_reason}"
             category = "danger"
             
-        # Save notification
+        # Create and save notification
         notification = Notification(
             user_id=registration.user_id,
             message=message,
             category=category
         )
-        
         db.session.add(notification)
-        db.session.commit()
         
-        status_text = 'diterima' if status == 'approved' else 'ditolak'
-        flash(f'Status pendaftaran telah diubah menjadi {status_text}', 'success')
+        # Commit all changes
+        try:
+            db.session.commit()
+            status_text = 'diterima' if status == 'approved' else 'ditolak'
+            flash(f'Status pendaftaran berhasil diubah menjadi {status_text}!', 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Terjadi kesalahan: {str(e)}', 'danger')
+            
         return redirect(url_for('view_registration', id=reg_id))
     
     flash('Status tidak valid!', 'danger')
     return redirect(url_for('view_registration', id=reg_id))
+
+@app.route('/upload_payment/<int:reg_id>', methods=['POST'])
+def upload_payment(reg_id):
+    if 'user_id' not in session:
+        flash('Silakan login terlebih dahulu!', 'warning')
+        return redirect(url_for('auth.login'))
+        
+    registration = Registration.query.get_or_404(reg_id)
+    
+    if registration.user_id != session['user_id']:
+        flash('Unauthorized access!', 'danger')
+        return redirect(url_for('user_dashboard'))
+        
+    if 'payment_proof' not in request.files:
+        flash('Tidak ada file yang diupload!', 'danger')
+        return redirect(url_for('user_dashboard'))
+        
+    file = request.files['payment_proof']
+    if file.filename == '':
+        flash('Tidak ada file yang dipilih!', 'danger')
+        return redirect(url_for('user_dashboard'))
+        
+    if file and allowed_file(file.filename):
+        # Create payment_proofs directory if it doesn't exist
+        upload_dir = os.path.join(app.static_folder, 'uploads', 'payment_proofs')
+        os.makedirs(upload_dir, exist_ok=True)
+        
+        # Save the file
+        filename = secure_filename(f"payment_{reg_id}_{int(datetime.utcnow().timestamp())}.{file.filename.rsplit('.', 1)[1].lower()}")
+        file.save(os.path.join(upload_dir, filename))
+        
+        # Update registration payment status
+        registration.payment_status = 'pending'
+        registration.payment_proof = filename
+        registration.payment_date = datetime.strptime(request.form['payment_date'], '%Y-%m-%dT%H:%M')
+        db.session.commit()
+        
+        # Create notification for admin
+        notification = Notification(
+            user_id=User.query.filter_by(role='admin').first().id,
+            message=f"Ada pembayaran baru dari {registration.full_name} yang perlu diverifikasi.",
+            category="info"
+        )
+        db.session.add(notification)
+        db.session.commit()
+        
+        flash('Bukti pembayaran berhasil diupload!', 'success')
+        return redirect(url_for('user_dashboard'))
+        
+    flash('Format file tidak diizinkan!', 'danger')
+    return redirect(url_for('user_dashboard'))
+
+@app.route('/update_payment/<int:reg_id>', methods=['POST'])
+def update_payment(reg_id):
+    if session.get('role') != 'admin':
+        flash('Unauthorized access!', 'danger')
+        return redirect(url_for('auth.login'))
+        
+    registration = Registration.query.get_or_404(reg_id)
+    payment_status = request.form.get('payment_status')
+    payment_amount = float(request.form.get('payment_amount', 0))
+    
+    if payment_status in ['paid', 'unpaid']:
+        registration.payment_status = payment_status
+        registration.payment_amount = payment_amount if payment_status == 'paid' else 0
+        
+        # Create notification for user
+        message = ""
+        if payment_status == 'paid':
+            registration.payment_date = datetime.utcnow()
+            message = f"Pembayaran Anda sebesar Rp {payment_amount:,.2f} telah dikonfirmasi."
+            category = "success"
+        else:
+            message = "Pembayaran Anda ditolak. Silakan upload ulang bukti pembayaran."
+            category = "danger"
+            
+        notification = Notification(
+            user_id=registration.user_id,
+            message=message,
+            category=category
+        )
+        db.session.add(notification)
+        db.session.commit()
+        
+        flash('Status pembayaran berhasil diperbarui!', 'success')
+        return redirect(url_for('view_registration', id=reg_id))
+    
+    flash('Status pembayaran tidak valid!', 'danger')
+    return redirect(url_for('view_registration', id=reg_id))
+
+@app.route('/pembayaran')
+def pembayaran():
+    if 'user_id' not in session:
+        flash('Silakan login terlebih dahulu!', 'warning')
+        return redirect(url_for('auth.login'))
+        
+    registration = Registration.query.filter_by(user_id=session['user_id']).first()
+    if not registration:
+        flash('Anda belum melakukan pendaftaran!', 'warning')
+        return redirect(url_for('registration_form'))
+        
+    return render_template('pembayaran.html', registration=registration)
 
 if __name__ == '__main__':
     app.run(debug=True)

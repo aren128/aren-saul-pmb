@@ -99,6 +99,7 @@ class Registration(db.Model):
     payment_status = db.Column(db.String(20), default='unpaid')
     payment_amount = db.Column(db.Float, default=0.0)
     payment_date = db.Column(db.DateTime, nullable=True)
+    payment_proof = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
