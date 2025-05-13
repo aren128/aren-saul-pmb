@@ -1,5 +1,7 @@
 from flask import render_template, redirect, url_for, request, flash, session
+from werkzeug.security import check_password_hash
 from . import auth
+from models import User, db, create_user
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -8,14 +10,26 @@ def register():
         email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        
+
         if password != confirm_password:
-            flash('Passwords do not match!', 'danger')
+            flash('Password tidak cocok!', 'danger')
             return render_template('auth/register.html')
-        
-        flash('Registration successful! Please login.', 'success')
-        return redirect(url_for('auth.login'))
-    
+
+        if User.get_by_username(username):
+            flash('Username sudah digunakan!', 'danger')
+            return render_template('auth/register.html')
+
+        if User.get_by_email(email):
+            flash('Email sudah terdaftar!', 'danger')
+            return render_template('auth/register.html')
+
+        try:
+            user = create_user(username, email, password)
+            flash('Registrasi berhasil! Silakan login.', 'success')
+            return redirect(url_for('auth.login'))
+        except Exception as e:
+            flash(f'Terjadi kesalahan: {str(e)}', 'danger')
+
     return render_template('auth/register.html')
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -23,15 +37,24 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        
-        session['user_id'] = 1
-        session['username'] = username
-        flash('Login successful!', 'success')
-        return redirect(url_for('user_dashboard'))
-    
+
+        user = User.authenticate(username, password)
+        if user:
+            session['user_id'] = user.id
+            session['username'] = user.username
+            session['role'] = user.role
+            
+            flash('Login berhasil!', 'success')
+            if user.is_admin():
+                return redirect(url_for('admin_dashboard'))
+            return redirect(url_for('user_dashboard'))
+        else:
+            flash('Username atau password salah!', 'danger')
+
     return render_template('auth/login.html')
 
 @auth.route('/logout')
 def logout():
     session.clear()
+    flash('Berhasil logout!', 'success')
     return redirect(url_for('auth.login'))

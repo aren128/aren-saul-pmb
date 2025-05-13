@@ -1,7 +1,7 @@
 from flask import Flask, render_template, session, redirect, url_for, request, flash, jsonify
 from werkzeug.utils import secure_filename
 import os
-from models import db, Registration, init_db
+from models import db, Registration, User, init_db
 from datetime import datetime
 from auth import auth
 
