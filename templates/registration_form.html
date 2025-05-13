@@ -8,18 +8,23 @@
     </div>
     <div class="card-body">
         <form method="POST" action="{{ url_for('register_student') }}" enctype="multipart/form-data" id="registrationForm">
+            <!-- User Info -->
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="full_name" class="form-label">Nama Lengkap</label>
-                    <input type="text" class="form-control" id="full_name" name="full_name" required>
+                    <input type="text" class="form-control" id="full_name" name="full_name" value="{{ user.username if user else '' }}" required>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="birth_date" class="form-label">Tanggal Lahir</label>
-                    <input type="date" class="form-control" id="birth_date" name="birth_date" required>
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email if user else '' }}" readonly>
                 </div>
             </div>
             
             <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="birth_date" class="form-label">Tanggal Lahir</label>
+                    <input type="date" class="form-control" id="birth_date" name="birth_date" required>
+                </div>
                 <div class="col-md-6 mb-3">
                     <label for="gender" class="form-label">Jenis Kelamin</label>
                     <select class="form-select" id="gender" name="gender" required>
@@ -28,6 +33,9 @@
                         <option value="Perempuan">Perempuan</option>
                     </select>
                 </div>
+            </div>
+            
+            <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="phone" class="form-label">No. Telepon</label>
                     <input type="text" class="form-control" id="phone" name="phone" required>
@@ -42,6 +50,15 @@
             <div class="mb-3">
                 <label for="previous_school" class="form-label">Asal Sekolah</label>
                 <input type="text" class="form-control" id="previous_school" name="previous_school" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="school_time" class="form-label">Waktu Sekolah</label>
+                <select class="form-select" id="school_time" name="school_time" required>
+                    <option value="">-- Pilih Waktu Sekolah --</option>
+                    <option value="pagi">Pagi (07:00 - 13:00)</option>
+                    <option value="malam">Malam (16:00 - 21:00)</option>
+                </select>
             </div>
             
             <div class="row">

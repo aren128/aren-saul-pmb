@@ -4,6 +4,32 @@
 {% block content %}
 <h2>Dashboard Siswa</h2>
 
+<style>
+    .alert-permanent {
+        margin-bottom: 1rem;
+        border-left: 4px solid;
+    }
+    .alert-permanent.alert-info {
+        border-left-color: #0dcaf0;
+    }
+    .alert-permanent.alert-success {
+        border-left-color: #198754;
+    }
+    .alert-permanent.alert-warning {
+        border-left-color: #ffc107;
+    }
+    .alert-permanent.alert-danger {
+        border-left-color: #dc3545;
+    }
+    .table-bordered td, .table-bordered th {
+        border-color: #dee2e6;
+    }
+    .badge {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+</style>
+
 <div class="row">
     <div class="col-md-4">
         <div class="card">
@@ -27,20 +53,20 @@
             <div class="card-body">
                 {% if registration %}
                     {% if registration.status == 'pending' %}
-                    <div class="alert alert-warning">
+                    <div class="alert alert-warning alert-permanent">
                         <i class="fas fa-clock me-2"></i> Menunggu Persetujuan
                     </div>
                     {% elif registration.status == 'approved' %}
-                    <div class="alert alert-success">
+                    <div class="alert alert-success alert-permanent">
                         <i class="fas fa-check-circle me-2"></i> Selamat! Pendaftaran Anda telah disetujui.
                     </div>
                     {% elif registration.status == 'rejected' %}
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger alert-permanent">
                         <i class="fas fa-times-circle me-2"></i> Maaf, pendaftaran Anda ditolak.
                     </div>
                     {% endif %}
                 {% else %}
-                <div class="alert alert-info">
+                <div class="alert alert-info alert-permanent">
                     <i class="fas fa-info-circle me-2"></i> Anda belum mengisi formulir pendaftaran.
                 </div>
                 <a href="{{ url_for('registration_form') }}" class="btn btn-primary">Isi Formulir</a>
@@ -122,4 +148,26 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Auto refresh the page every 30 seconds to check for status updates
+setInterval(function() {
+    location.reload();
+}, 30000);
+
+// Add animation for status changes
+document.addEventListener('DOMContentLoaded', function() {
+    const statusAlert = document.querySelector('.alert-permanent');
+    if (statusAlert) {
+        statusAlert.style.animation = 'fadeIn 0.5s ease-in';
+    }
+});
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</script>
 {% endblock %}

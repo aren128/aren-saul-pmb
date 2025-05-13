@@ -24,9 +24,17 @@ def register():
             return render_template('auth/register.html')
 
         try:
+            # Create new user
             user = create_user(username, email, password)
-            flash('Registrasi berhasil! Silakan login.', 'success')
-            return redirect(url_for('auth.login'))
+            
+            # Automatically log in the user after registration
+            session['user_id'] = user.id
+            session['username'] = user.username
+            session['role'] = user.role
+            
+            flash('Registrasi berhasil! Silakan lengkapi formulir pendaftaran.', 'success')
+            # Redirect to registration form immediately
+            return redirect(url_for('registration_form'))
         except Exception as e:
             flash(f'Terjadi kesalahan: {str(e)}', 'danger')
 

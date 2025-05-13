@@ -1,5 +1,6 @@
 from flask import Flask, render_template, session, redirect, url_for, request, flash, jsonify
 from werkzeug.utils import secure_filename
+from werkzeug.security import check_password_hash
 import os
 from models import db, Registration, User, init_db
 from datetime import datetime
@@ -28,18 +29,37 @@ app.register_blueprint(auth, url_prefix='/auth')
 @app.route('/')
 @app.route('/home')
 def home():
-    # Get latest registrations for display
+    
     registrations = Registration.query.order_by(Registration.created_at.desc()).limit(5).all()
     return render_template('index.html', registrations=registrations)
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        user = User.query.filter_by(username=username).first()
+        
+        if user and user.is_admin() and check_password_hash(user.password, password):
+            session['user_id'] = user.id
+            session['username'] = user.username
+            session['role'] = user.role
+            flash('Welcome back, Admin!', 'success')
+            return redirect(url_for('admin_dashboard'))
+            
+        flash('Invalid credentials or not authorized!', 'danger')
+    return render_template('admin_login.html')
 
 @app.route('/admin_dashboard')
 def admin_dashboard():
     if session.get('role') != 'admin':
         flash('Unauthorized access!', 'danger')
-        return redirect(url_for('auth.login'))  # Added missing parenthesis
-        
+        return redirect(url_for('auth.login'))
+    
     # Get all registrations
     registrations = Registration.query.order_by(Registration.created_at.desc()).all()
+    
     return render_template('admin_dashboard.html', registrations=registrations)
 
 @app.route('/user_dashboard')
@@ -54,8 +74,15 @@ def user_dashboard():
 @app.route('/registration_form')
 def registration_form():
     if 'user_id' not in session:
+        flash('Silakan login terlebih dahulu!', 'warning')
         return redirect(url_for('auth.login'))
-    return render_template('registration_form.html')
+        
+    user = User.query.get(session['user_id'])
+    if user.has_registration():
+        flash('Anda sudah melakukan pendaftaran!', 'warning')
+        return redirect(url_for('user_dashboard'))
+        
+    return render_template('registration_form.html', user=user)
 
 @app.route('/register_student', methods=['POST'])
 def register_student():
@@ -85,6 +112,7 @@ def register_student():
                 phone=request.form['phone'],
                 address=request.form['address'],
                 previous_school=request.form['previous_school'],
+                school_time=request.form['school_time'],  # Add this line
                 ijazah_file=ijazah_filename,
                 foto_file=foto_filename,
                 parent_name=request.form['parent_name'],
@@ -103,22 +131,36 @@ def register_student():
             flash(f'Terjadi kesalahan: {str(e)}', 'danger')
             return redirect(url_for('registration_form'))
 
+# Add this route before the existing routes
+@app.route('/registration/<int:id>')
+def view_registration(id):
+    if session.get('role') != 'admin':
+        flash('Unauthorized access!', 'danger')
+        return redirect(url_for('auth.login'))
+        
+    registration = Registration.query.get_or_404(id)
+    return render_template('view_registration.html', registration=registration)
+
 # Add routes for approve/reject functionality
 @app.route('/update_status/<int:reg_id>', methods=['POST'])
 def update_status(reg_id):
     if session.get('role') != 'admin':
-        return jsonify({'error': 'Unauthorized'}), 403
+        flash('Unauthorized access!', 'danger')
+        return redirect(url_for('auth.login'))
         
     registration = Registration.query.get_or_404(reg_id)
     status = request.form.get('status')
     
-    if status in ['approved', 'rejected', 'pending']:
+    if status in ['approved', 'rejected']:
         registration.status = status
         db.session.commit()
-        flash(f'Status updated to {status}', 'success')
-        return jsonify({'success': True})
+        
+        status_text = 'diterima' if status == 'approved' else 'ditolak'
+        flash(f'Status pendaftaran telah diubah menjadi {status_text}', 'success')
+        return redirect(url_for('view_registration', id=reg_id))
     
-    return jsonify({'error': 'Invalid status'}), 400
+    flash('Status tidak valid!', 'danger')
+    return redirect(url_for('view_registration', id=reg_id))
 
 if __name__ == '__main__':
     app.run(debug=True)

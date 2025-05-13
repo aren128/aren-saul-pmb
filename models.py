@@ -54,6 +54,12 @@ class User(db.Model):
             'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S')
         }
 
+    def has_registration(self):
+        return bool(Registration.query.filter_by(user_id=self.id).first())
+        
+    def get_registration(self):
+        return Registration.query.filter_by(user_id=self.id).first()
+
 class UserRegistration(db.Model):
     __tablename__ = 'user_registrations'
 
@@ -83,6 +89,7 @@ class Registration(db.Model):
     phone = db.Column(db.String(20), nullable=False)
     address = db.Column(db.Text, nullable=False)
     previous_school = db.Column(db.String(100), nullable=False)
+    school_time = db.Column(db.String(20), nullable=False)
     ijazah_file = db.Column(db.String(255), nullable=False)
     foto_file = db.Column(db.String(255), nullable=False)
     parent_name = db.Column(db.String(100), nullable=False)
@@ -93,7 +100,7 @@ class Registration(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __init__(self, user_id, full_name, birth_date, gender, phone, address, 
-                 previous_school, ijazah_file, foto_file, parent_name, 
+                 previous_school, school_time, ijazah_file, foto_file, parent_name, 
                  parent_phone, parent_occupation, status='pending'):
         self.user_id = user_id
         self.full_name = full_name
@@ -102,6 +109,7 @@ class Registration(db.Model):
         self.phone = phone
         self.address = address
         self.previous_school = previous_school
+        self.school_time = school_time
         self.ijazah_file = ijazah_file
         self.foto_file = foto_file
         self.parent_name = parent_name
@@ -119,6 +127,7 @@ class Registration(db.Model):
             'phone': self.phone,
             'address': self.address,
             'previous_school': self.previous_school,
+            'school_time': self.school_time,
             'ijazah_file': self.ijazah_file,
             'foto_file': self.foto_file,
             'parent_name': self.parent_name,
@@ -137,7 +146,7 @@ def init_db(app):
             admin = User(
                 username='admin',
                 email='admin@example.com',
-                password='admin123',
+                password='admin123',  # Remember to change this password
                 role='admin'
             )
             db.session.add(admin)

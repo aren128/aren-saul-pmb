@@ -359,3 +359,27 @@
         </div>
     </div>
 </div>
+
+<div class="row mt-4 mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h4><i class="fas fa-shield-alt me-2"></i>Admin Area</h4>
+            </div>
+            <div class="card-body text-center">
+                {% if not session.get('user_id') %}
+                    <p class="lead mb-4">Login khusus untuk administrator sistem</p>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('admin_login') }}" class="btn btn-danger btn-lg">
+                            <i class="fas fa-lock me-2"></i>Admin Login
+                        </a>
+                    </div>
+                {% elif session.get('role') == 'admin' %}
+                    <!-- ...existing admin content... -->
+                {% else %}
+                    <!-- ...existing content... -->
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
