@@ -69,14 +69,28 @@
     border-left: 4px solid #0dcaf0;
 }
 
+.alert-permanent {
+    margin-bottom: 1rem;
+    border-left: 4px solid;
+    animation: slideIn 0.5s ease;
+}
+
+.alert-permanent.alert-success {
+    border-left-color: #198754;
+}
+
+.alert-permanent.alert-danger {
+    border-left-color: #dc3545;
+}
+
 @keyframes slideIn {
-    from {
-        transform: translateY(-100%);
+    from { 
         opacity: 0;
+        transform: translateX(-20px);
     }
     to {
-        transform: translateY(0);
         opacity: 1;
+        transform: translateX(0);
     }
 }
 

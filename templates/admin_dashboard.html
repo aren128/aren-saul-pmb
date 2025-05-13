@@ -16,6 +16,7 @@
                         <th>Nama</th>
                         <th>Waktu Sekolah</th>
                         <th>Status</th>
+                        <th>Status Pembayaran</th>
                         <th>Tanggal Daftar</th>
                         <th>Aksi</th>
                     </tr>
@@ -41,21 +42,27 @@
                             <span class="badge bg-danger">Ditolak</span>
                             {% endif %}
                         </td>
+                        <td>
+                            {% if reg.payment_status == 'unpaid' %}
+                            <span class="badge bg-danger">Belum Bayar</span>
+                            {% elif reg.payment_status == 'pending' %}
+                            <span class="badge bg-warning">Menunggu Verifikasi</span>
+                            {% elif reg.payment_status == 'paid' %}
+                            <span class="badge bg-success">Lunas</span>
+                            {% endif %}
+                        </td>
                         <td>{{ reg.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
                         <td>
-                            <a href="{{ url_for('view_registration', id=reg.id) }}" class="btn btn-sm btn-info">
-                                <i class="fas fa-eye me-1"></i>Detail
-                            </a>
-                            {% if reg.status == 'pending' %}
-                            <form method="POST" action="{{ url_for('update_status', reg_id=reg.id) }}" class="d-inline">
-                                <button type="submit" name="status" value="approved" class="btn btn-sm btn-success" onclick="return confirm('Yakin ingin menerima pendaftaran ini?')">
-                                    <i class="fas fa-check me-1"></i>Terima
+                            <div class="btn-group">
+                                <a href="{{ url_for('view_registration', id=reg.id) }}" class="btn btn-sm btn-info">
+                                    <i class="fas fa-eye me-1"></i>Detail
+                                </a>
+                                {% if reg.payment_status == 'pending' %}
+                                <button type="button" class="btn btn-sm btn-success" onclick="showPaymentModal({{ reg.id }})">
+                                    <i class="fas fa-money-bill me-1"></i>Verifikasi Pembayaran
                                 </button>
-                                <button type="submit" name="status" value="rejected" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menolak pendaftaran ini?')">
-                                    <i class="fas fa-times me-1"></i>Tolak
-                                </button>
-                            </form>
-                            {% endif %}
+                                {% endif %}
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
@@ -69,4 +76,106 @@
         {% endif %}
     </div>
 </div>
+
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Tolak Pendaftaran</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="rejectForm" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Alasan Penolakan</label>
+                        <select class="form-select" id="reason" name="reason" required>
+                            <option value="">-- Pilih Alasan --</option>
+                            <option value="Dokumen tidak lengkap">Dokumen tidak lengkap</option>
+                            <option value="Data tidak valid">Data tidak valid</option>
+                            <option value="Kuota kelas penuh">Kuota kelas penuh</option>
+                            <option value="Tidak memenuhi syarat akademik">Tidak memenuhi syarat akademik</option>
+                            <option value="custom">Alasan lain...</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 d-none" id="customReasonDiv">
+                        <label for="customReason" class="form-label">Alasan Lainnya</label>
+                        <textarea class="form-control" id="customReason" name="customReason" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" name="status" value="rejected">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Konfirmasi Tolak</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add Payment Verification Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Verifikasi Pembayaran</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="paymentForm" method="POST">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Status Pembayaran</label>
+                        <select class="form-select" name="payment_status" required>
+                            <option value="paid">Lunas</option>
+                            <option value="unpaid">Belum Bayar</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Jumlah Pembayaran</label>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" class="form-control" name="payment_amount" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-success">Konfirmasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function showRejectModal(regId) {
+    const modal = new bootstrap.Modal(document.getElementById('rejectModal'));
+    const form = document.getElementById('rejectForm');
+    form.action = "{{ url_for('update_status', reg_id=0) }}".replace('0', regId);
+    
+    const reasonSelect = document.getElementById('reason');
+    const customReasonDiv = document.getElementById('customReasonDiv');
+    const customReason = document.getElementById('customReason');
+    
+    reasonSelect.addEventListener('change', function() {
+        if (this.value === 'custom') {
+            customReasonDiv.classList.remove('d-none');
+            customReason.required = true;
+        } else {
+            customReasonDiv.classList.add('d-none');
+            customReason.required = false;
+        }
+    });
+    
+    modal.show();
+}
+
+function showPaymentModal(regId) {
+    const modal = new bootstrap.Modal(document.getElementById('paymentModal'));
+    const form = document.getElementById('paymentForm');
+    form.action = `{{ url_for('update_payment', reg_id=0) }}`.replace('0', regId);
+    modal.show();
+}
+</script>
 {% endblock %}

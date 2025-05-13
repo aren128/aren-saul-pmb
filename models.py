@@ -96,12 +96,16 @@ class Registration(db.Model):
     parent_phone = db.Column(db.String(20), nullable=False)
     parent_occupation = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(20), default='pending')
+    payment_status = db.Column(db.String(20), default='unpaid')
+    payment_amount = db.Column(db.Float, default=0.0)
+    payment_date = db.Column(db.DateTime, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __init__(self, user_id, full_name, birth_date, gender, phone, address, 
                  previous_school, school_time, ijazah_file, foto_file, parent_name, 
-                 parent_phone, parent_occupation, status='pending'):
+                 parent_phone, parent_occupation, status='pending', 
+                 payment_status='unpaid', payment_amount=0.0):
         self.user_id = user_id
         self.full_name = full_name
         self.birth_date = birth_date
@@ -116,6 +120,8 @@ class Registration(db.Model):
         self.parent_phone = parent_phone
         self.parent_occupation = parent_occupation
         self.status = status
+        self.payment_status = payment_status
+        self.payment_amount = payment_amount
 
     def to_dict(self):
         return {
@@ -134,8 +140,25 @@ class Registration(db.Model):
             'parent_phone': self.parent_phone,
             'parent_occupation': self.parent_occupation,
             'status': self.status,
+            'payment_status': self.payment_status,
+            'payment_amount': self.payment_amount,
             'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S')
         }
+
+class Notification(db.Model):
+    __tablename__ = 'notifications'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    message = db.Column(db.String(255), nullable=False)
+    category = db.Column(db.String(20), nullable=False)
+    is_read = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    def __init__(self, user_id, message, category):
+        self.user_id = user_id
+        self.message = message
+        self.category = category
 
 def init_db(app):
     db.init_app(app)

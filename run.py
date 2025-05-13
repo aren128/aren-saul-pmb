@@ -2,7 +2,7 @@ from flask import Flask, render_template, session, redirect, url_for, request, f
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
 import os
-from models import db, Registration, User, init_db
+from models import db, Registration, User, Notification, init_db
 from datetime import datetime
 from auth import auth
 
@@ -69,7 +69,21 @@ def user_dashboard():
         
     # Get registration data for current user
     registration = Registration.query.filter_by(user_id=session['user_id']).first()
-    return render_template('dashboard.html', registration=registration)
+    
+    # Get unread notifications
+    notifications = Notification.query.filter_by(
+        user_id=session['user_id'],
+        is_read=False
+    ).order_by(Notification.created_at.desc()).all()
+    
+    # Mark notifications as read
+    for notification in notifications:
+        notification.is_read = True
+    db.session.commit()
+    
+    return render_template('dashboard.html', 
+                         registration=registration,
+                         notifications=notifications)
 
 @app.route('/registration_form')
 def registration_form():
@@ -153,6 +167,33 @@ def update_status(reg_id):
     
     if status in ['approved', 'rejected']:
         registration.status = status
+        registration.updated_at = datetime.utcnow()
+        
+        # Create notification message
+        if status == 'approved':
+            message = "Selamat! Pendaftaran Anda telah diterima."
+            category = "success"
+        else:
+            reason = request.form.get('reason')
+            custom_reason = request.form.get('customReason')
+            
+            # Get the final reason text
+            if reason == 'custom':
+                final_reason = custom_reason
+            else:
+                final_reason = reason
+                
+            message = f"Maaf, pendaftaran Anda ditolak. Alasan: {final_reason}"
+            category = "danger"
+            
+        # Save notification
+        notification = Notification(
+            user_id=registration.user_id,
+            message=message,
+            category=category
+        )
+        
+        db.session.add(notification)
         db.session.commit()
         
         status_text = 'diterima' if status == 'approved' else 'ditolak'
