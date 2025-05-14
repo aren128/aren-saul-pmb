@@ -51,18 +51,16 @@ def login():
             session['user_id'] = user.id
             session['username'] = user.username
             session['role'] = user.role
-            
-            flash('Login berhasil!', 'success')
+            flash('Login berhasil!', 'success-permanent')
             if user.is_admin():
                 return redirect(url_for('admin_dashboard'))
             return redirect(url_for('user_dashboard'))
-        else:
-            flash('Username atau password salah!', 'danger')
+        flash('Username atau password salah!', 'danger-permanent')
 
     return render_template('auth/login.html')
 
 @auth.route('/logout')
 def logout():
     session.clear()
-    flash('Berhasil logout!', 'success')
+    flash('Berhasil logout!', 'success-permanent')
     return redirect(url_for('auth.login'))

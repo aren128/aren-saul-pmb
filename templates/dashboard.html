@@ -8,8 +8,10 @@
     .alert-permanent {
         margin-bottom: 1rem;
         border-left: 4px solid;
+        transition: all 0.3s ease;
     }
     .alert-permanent.alert-info {
+        background-color: rgba(13, 202, 240, 0.1);
         border-left-color: #0dcaf0;
     }
     .alert-permanent.alert-success {
@@ -20,6 +22,9 @@
     }
     .alert-permanent.alert-danger {
         border-left-color: #dc3545;
+    }
+    .alert-permanent:hover {
+        transform: translateX(5px);
     }
     .table-bordered td, .table-bordered th {
         border-color: #dee2e6;
@@ -45,6 +50,14 @@
 
     .alert {
         animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .btn-outline-primary {
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+        transform: scale(1.05);
     }
 </style>
 
@@ -289,7 +302,7 @@
                         <h3 class="text-primary">Rp 500.000,00</h3>
                         <small class="text-muted">Silakan transfer ke rekening berikut:</small>
                         
-                        <div class="alert alert-info mt-2">
+                        <div class="alert alert-info alert-permanent mt-2">
                             <div class="d-flex align-items-center">
                                 <div>
                                     <strong>Bank BRI</strong><br>
@@ -475,7 +488,7 @@
                                                 <label class="form-label">Jumlah yang harus dibayar:</label>
                                                 <h4 class="text-primary">Rp 500.000,00</h4>
                                                 <small class="text-muted">Silakan transfer ke rekening berikut:</small>
-                                                <div class="alert alert-info mt-2">
+                                                <div class="alert alert-info alert-permanent mt-2">
                                                     <div class="d-flex align-items-center">
                                                         <div>
                                                             <strong>Bank BRI</strong><br>

@@ -86,6 +86,104 @@
     </div>
 </div>
 
+<!-- Add this after the existing card -->
+<div class="row mt-4">
+    <!-- Gender Distribution Card -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4><i class="fas fa-users me-2"></i>Distribusi Gender</h4>
+            </div>
+            <div class="card-body">
+                {% set total_students = registrations|length %}
+                {% set male_students = registrations|selectattr('gender', 'equalto', 'Laki-laki')|list|length %}
+                {% set female_students = registrations|selectattr('gender', 'equalto', 'Perempuan')|list|length %}
+                
+                {% if total_students > 0 %}
+                    {% set male_percentage = (male_students / total_students * 100)|round|int %}
+                    {% set female_percentage = (female_students / total_students * 100)|round|int %}
+                    
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar bg-primary" role="progressbar" 
+                                     style="width: {{ male_percentage }}%">
+                                    {{ male_percentage }}%
+                                </div>
+                                <div class="progress-bar bg-danger" role="progressbar" 
+                                     style="width: {{ female_percentage }}%">
+                                    {{ female_percentage }}%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="small">
+                                <div class="mb-1">
+                                    <i class="fas fa-male text-primary"></i> Laki-laki: {{ male_students }} ({{ male_percentage }}%)
+                                </div>
+                                <div>
+                                    <i class="fas fa-female text-danger"></i> Perempuan: {{ female_students }} ({{ female_percentage }}%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info mb-0">
+                        Belum ada data pendaftaran.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- School Time Distribution Card -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4><i class="fas fa-clock me-2"></i>Distribusi Waktu Sekolah</h4>
+            </div>
+            <div class="card-body">
+                {% set morning_students = registrations|selectattr('school_time', 'equalto', 'pagi')|list|length %}
+                {% set night_students = registrations|selectattr('school_time', 'equalto', 'malam')|list|length %}
+                
+                {% if total_students > 0 %}
+                    {% set morning_percentage = (morning_students / total_students * 100)|round|int %}
+                    {% set night_percentage = (night_students / total_students * 100)|round|int %}
+                    
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="progress" style="height: 25px;">
+                                <div class="progress-bar bg-warning" role="progressbar" 
+                                     style="width: {{ morning_percentage }}%">
+                                    {{ morning_percentage }}%
+                                </div>
+                                <div class="progress-bar bg-dark" role="progressbar" 
+                                     style="width: {{ night_percentage }}%">
+                                    {{ night_percentage }}%
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="small">
+                                <div class="mb-1">
+                                    <i class="fas fa-sun text-warning"></i> Pagi: {{ morning_students }} ({{ morning_percentage }}%)
+                                </div>
+                                <div>
+                                    <i class="fas fa-moon text-dark"></i> Malam: {{ night_students }} ({{ night_percentage }}%)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info mb-0">
+                        Belum ada data pendaftaran.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="rejectModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
