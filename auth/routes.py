@@ -12,15 +12,15 @@ def register():
         confirm_password = request.form['confirm_password']
 
         if password != confirm_password:
-            flash('Password tidak cocok!', 'danger')
+            flash('Password tidak cocok!', 'danger-permanent')
             return render_template('auth/register.html')
 
         if User.get_by_username(username):
-            flash('Username sudah digunakan!', 'danger')
+            flash('Username sudah digunakan!', 'danger-permanent')
             return render_template('auth/register.html')
 
         if User.get_by_email(email):
-            flash('Email sudah terdaftar!', 'danger')
+            flash('Email sudah terdaftar!', 'danger-permanent')
             return render_template('auth/register.html')
 
         try:
@@ -36,7 +36,7 @@ def register():
             # Redirect to registration form immediately
             return redirect(url_for('registration_form'))
         except Exception as e:
-            flash(f'Terjadi kesalahan: {str(e)}', 'danger')
+            flash(f'Terjadi kesalahan: {str(e)}', 'danger-permanent')
 
     return render_template('auth/register.html')
 

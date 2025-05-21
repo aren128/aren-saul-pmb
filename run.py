@@ -96,7 +96,7 @@ def registration_form():
         
     user = User.query.get(session['user_id'])
     if user.has_registration():
-        flash('Anda sudah melakukan pendaftaran!', 'warning')
+        flash('Anda sudah melakukan pendaftaran!', 'warning-permanent')
         return redirect(url_for('user_dashboard'))
         
     return render_template('registration_form.html', user=user)
@@ -141,7 +141,7 @@ def register_student():
             db.session.add(new_registration)
             db.session.commit()
             
-            flash('Pendaftaran berhasil dikirim! Silakan pantau status pendaftaran Anda.', 'success')
+            flash('Pendaftaran berhasil dikirim! Silakan pantau status pendaftaran Anda.', 'success'-'permanent')
             return redirect(url_for('user_dashboard'))
             
         except Exception as e:
@@ -253,7 +253,7 @@ def upload_payment(reg_id):
         db.session.add(notification)
         db.session.commit()
         
-        flash('Bukti pembayaran berhasil diupload!', 'success')
+        flash('Bukti pembayaran berhasil diupload!', 'success'-'permanent')
         return redirect(url_for('user_dashboard'))
         
     flash('Format file tidak diizinkan!', 'danger')
@@ -291,7 +291,7 @@ def update_payment(reg_id):
         db.session.add(notification)
         db.session.commit()
         
-        flash('Status pembayaran berhasil diperbarui!', 'success')
+        flash('Status pembayaran berhasil diperbarui!', 'success'-'permanent')
         return redirect(url_for('view_registration', id=reg_id))
     
     flash('Status pembayaran tidak valid!', 'danger')

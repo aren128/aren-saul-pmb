@@ -1,58 +1,106 @@
-<!-- filepath: c:\Users\GC\OneDrive\Dokumen\New folder (2)\app\templates\dashboard.html -->
 {% extends 'layout.html' %}
 
 {% block content %}
-<h2>Dashboard Siswa</h2>
+<h2 class="mb-4">Dashboard Siswa</h2>
 
 <style>
+    /* Improved styling for better appearance */
     .alert-permanent {
         margin-bottom: 1rem;
         border-left: 4px solid;
+        padding: 1rem;
+        border-radius: 0.25rem;
     }
-    .alert-permanent.alert-info {
-        border-left-color: #0dcaf0;
+    .alert-permanent.alert-info { border-left-color: #0dcaf0; }
+    .alert-permanent.alert-success { border-left-color: #198754; }
+    .alert-permanent.alert-warning { border-left-color: #ffc107; }
+    .alert-permanent.alert-danger { border-left-color: #dc3545; }
+    
+    .card {
+        box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+        margin-bottom: 1.5rem;
     }
-    .alert-permanent.alert-success {
-        border-left-color: #198754;
+    
+    .card-header {
+        padding: 0.75rem 1.25rem;
     }
-    .alert-permanent.alert-warning {
-        border-left-color: #ffc107;
-    }
-    .alert-permanent.alert-danger {
-        border-left-color: #dc3545;
-    }
-    .table-bordered td, .table-bordered th {
-        border-color: #dee2e6;
-    }
-    .badge {
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
-    }
-
+    
     .card-header h4 {
         margin-bottom: 0;
+        font-size: 1.25rem;
     }
-
+    
+    .badge {
+        padding: 0.35rem 0.65rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    
+    .timeline {
+        position: relative;
+        padding-left: 1.5rem;
+    }
+    
+    .timeline-item {
+        position: relative;
+        padding-bottom: 1.5rem;
+    }
+    
+    .timeline-marker {
+        position: absolute;
+        left: -1.5rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+    }
+    
+    .timeline-content {
+        padding-left: 0.5rem;
+    }
+    
     .img-fluid {
         max-width: 100%;
         height: auto;
+        border-radius: 0.25rem;
     }
-
+    
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(-10px); }
         to { opacity: 1; transform: translateY(0); }
     }
-
+    
     .alert {
         animation: fadeIn 0.5s ease-in-out;
     }
+    
+    .progress {
+        height: 20px;
+        border-radius: 0.25rem;
+        overflow: hidden;
+    }
+    
+    .list-group-item.active {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    .btn-copy {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+    }
 </style>
 
-<div class="row">
+<div class="row g-4">
+    <!-- Left sidebar -->
     <div class="col-md-4">
+        <!-- Menu Card -->
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h4>Menu</h4>
+                <h4><i class="fas fa-bars me-2"></i>Menu</h4>
             </div>
             <div class="list-group list-group-flush">
                 <a href="{{ url_for('user_dashboard') }}" class="list-group-item list-group-item-action {% if request.endpoint == 'user_dashboard' %}active{% endif %}">
@@ -77,6 +125,7 @@
         </div>
 
         {% if registration %}
+        <!-- Progress Card -->
         <div class="card mt-4">
             <div class="card-header bg-info text-white">
                 <h4><i class="fas fa-tasks me-2"></i>Progress Pendaftaran</h4>
@@ -101,7 +150,7 @@
                 
                 {% set progress_percentage = (completed_steps / total_steps * 100) | round %}
                 
-                <div class="progress mb-3" style="height: 25px;">
+                <div class="progress mb-4">
                     <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" 
                          role="progressbar" 
                          style="width: {{ progress_percentage }}%"
@@ -112,12 +161,13 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row g-3">
+                    <!-- Document Status -->
                     <div class="col-md-6">
-                        <h5 class="mb-3">Status Dokumen:</h5>
+                        <h5 class="mb-3 fw-bold">Status Dokumen:</h5>
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Data Diri
+                                <span><i class="fas fa-user-edit me-2"></i>Data Diri</span>
                                 {% if registration %}
                                     <span class="badge bg-success rounded-pill">
                                         <i class="fas fa-check"></i>
@@ -129,7 +179,7 @@
                                 {% endif %}
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Pas Foto
+                                <span><i class="fas fa-camera me-2"></i>Pas Foto</span>
                                 {% if registration.foto_file %}
                                     <span class="badge bg-success rounded-pill">
                                         <i class="fas fa-check"></i>
@@ -141,7 +191,7 @@
                                 {% endif %}
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Ijazah/Dokumen
+                                <span><i class="fas fa-file-alt me-2"></i>Ijazah/Dokumen</span>
                                 {% if registration.ijazah_file %}
                                     <span class="badge bg-success rounded-pill">
                                         <i class="fas fa-check"></i>
@@ -153,7 +203,7 @@
                                 {% endif %}
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                Pembayaran
+                                <span><i class="fas fa-money-check-alt me-2"></i>Pembayaran</span>
                                 {% if registration.payment_status == 'paid' %}
                                     <span class="badge bg-success rounded-pill">
                                         <i class="fas fa-check"></i>
@@ -170,18 +220,20 @@
                             </li>
                         </ul>
                     </div>
+                    
+                    <!-- Admin Status -->
                     <div class="col-md-6">
-                        <h5 class="mb-3">Status Administrasi:</h5>
+                        <h5 class="mb-3 fw-bold">Status Administrasi:</h5>
                         <div class="timeline">
                             <div class="timeline-item">
                                 <div class="timeline-marker {% if registration %}bg-success{% else %}bg-secondary{% endif %}"></div>
                                 <div class="timeline-content">
-                                    <h6 class="mb-0">Pengisian Data Diri</h6>
+                                    <h6 class="mb-0 fw-bold">Pengisian Data Diri</h6>
                                     <small class="text-muted">
                                         {% if registration %}
-                                            Selesai pada: {{ registration.created_at.strftime('%d-%m-%Y %H:%M') }}
+                                            <i class="fas fa-calendar-check me-1"></i>Selesai: {{ registration.created_at.strftime('%d-%m-%Y %H:%M') }}
                                         {% else %}
-                                            Belum dilakukan
+                                            <i class="fas fa-times-circle me-1"></i>Belum dilakukan
                                         {% endif %}
                                     </small>
                                 </div>
@@ -189,16 +241,16 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker {% if registration.status == 'approved' %}bg-success{% elif registration.status == 'rejected' %}bg-danger{% elif registration.status == 'pending' %}bg-warning{% else %}bg-secondary{% endif %}"></div>
                                 <div class="timeline-content">
-                                    <h6 class="mb-0">Verifikasi Pendaftaran</h6>
+                                    <h6 class="mb-0 fw-bold">Verifikasi Pendaftaran</h6>
                                     <small class="text-muted">
                                         {% if registration.status == 'approved' %}
-                                            Diterima pada: {{ registration.updated_at.strftime('%d-%m-%Y %H:%M') }}
+                                            <i class="fas fa-check-circle me-1"></i>Diterima: {{ registration.updated_at.strftime('%d-%m-%Y %H:%M') }}
                                         {% elif registration.status == 'rejected' %}
-                                            Ditolak pada: {{ registration.updated_at.strftime('%d-%m-%Y %H:%M') }}
+                                            <i class="fas fa-times-circle me-1"></i>Ditolak: {{ registration.updated_at.strftime('%d-%m-%Y %H:%M') }}
                                         {% elif registration.status == 'pending' %}
-                                            Sedang diproses
+                                            <i class="fas fa-clock me-1"></i>Sedang diproses
                                         {% else %}
-                                            Belum diverifikasi
+                                            <i class="fas fa-hourglass-start me-1"></i>Belum diverifikasi
                                         {% endif %}
                                     </small>
                                 </div>
@@ -206,14 +258,14 @@
                             <div class="timeline-item">
                                 <div class="timeline-marker {% if registration.payment_status == 'paid' %}bg-success{% elif registration.payment_status == 'pending' %}bg-warning{% else %}bg-secondary{% endif %}"></div>
                                 <div class="timeline-content">
-                                    <h6 class="mb-0">Pembayaran</h6>
+                                    <h6 class="mb-0 fw-bold">Pembayaran</h6>
                                     <small class="text-muted">
                                         {% if registration.payment_status == 'paid' %}
-                                            Lunas pada: {{ registration.payment_date.strftime('%d-%m-%Y %H:%M') }}
+                                            <i class="fas fa-check-circle me-1"></i>Lunas: {{ registration.payment_date.strftime('%d-%m-%Y %H:%M') }}
                                         {% elif registration.payment_status == 'pending' %}
-                                            Menunggu verifikasi
+                                            <i class="fas fa-clock me-1"></i>Menunggu verifikasi
                                         {% else %}
-                                            Belum dibayar
+                                            <i class="fas fa-times-circle me-1"></i>Belum dibayar
                                         {% endif %}
                                     </small>
                                 </div>
@@ -223,37 +275,44 @@
                 </div>
             </div>
         </div>
-        {% endif %}
 
-        {% if registration %}
-        <!-- Status Pendaftaran Card -->
+        <!-- Status Card -->
         <div class="card mt-4">
             <div class="card-header bg-primary text-white">
                 <h4><i class="fas fa-clipboard-list me-2"></i>Status Pendaftaran</h4>
             </div>
             <div class="card-body">
-                <div class="row">
+                <div class="row g-3">
+                    <!-- Registration Status -->
                     <div class="col-md-6">
-                        <h5>Status Pendaftaran</h5>
+                        <h5 class="fw-bold">Status Pendaftaran</h5>
                         {% if registration.status == 'pending' %}
-                        <div class="alert alert-warning mb-0">
-                            <i class="fas fa-clock me-2"></i>Menunggu Persetujuan
+                        <div class="alert alert-warning mb-0 d-flex align-items-center">
+                            <i class="fas fa-clock me-2 fs-5"></i>
+                            <div>Menunggu Persetujuan</div>
                         </div>
                         {% elif registration.status == 'approved' %}
-                        <div class="alert alert-success mb-0">
-                            <i class="fas fa-check-circle me-2"></i>Pendaftaran Diterima
+                        <div class="alert alert-success mb-0 d-flex align-items-center">
+                            <i class="fas fa-check-circle me-2 fs-5"></i>
+                            <div>Pendaftaran Diterima</div>
                         </div>
                         {% elif registration.status == 'rejected' %}
-                        <div class="alert alert-danger mb-0">
-                            <i class="fas fa-times-circle me-2"></i>Pendaftaran Ditolak
+                        <div class="alert alert-danger mb-0 d-flex align-items-center">
+                            <i class="fas fa-times-circle me-2 fs-5"></i>
+                            <div>Pendaftaran Ditolak</div>
                         </div>
                         {% endif %}
                     </div>
+                    
+                    <!-- Payment Status -->
                     <div class="col-md-6">
-                        <h5>Status Pembayaran</h5>
+                        <h5 class="fw-bold">Status Pembayaran</h5>
                         {% if registration.payment_status == 'unpaid' %}
                         <div class="alert alert-danger mb-0">
-                            <i class="fas fa-exclamation-circle me-2"></i>Belum Bayar
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-exclamation-circle me-2 fs-5"></i>
+                                <div>Belum Bayar</div>
+                            </div>
                             {% if registration.status == 'approved' %}
                             <div class="mt-2">
                                 <a href="{{ url_for('pembayaran') }}" class="btn btn-primary btn-sm">
@@ -263,12 +322,14 @@
                             {% endif %}
                         </div>
                         {% elif registration.payment_status == 'pending' %}
-                        <div class="alert alert-warning mb-0">
-                            <i class="fas fa-clock me-2"></i>Menunggu Verifikasi
+                        <div class="alert alert-warning mb-0 d-flex align-items-center">
+                            <i class="fas fa-clock me-2 fs-5"></i>
+                            <div>Menunggu Verifikasi</div>
                         </div>
                         {% elif registration.payment_status == 'paid' %}
-                        <div class="alert alert-success mb-0">
-                            <i class="fas fa-check-circle me-2"></i>Pembayaran Lunas
+                        <div class="alert alert-success mb-0 d-flex align-items-center">
+                            <i class="fas fa-check-circle me-2 fs-5"></i>
+                            <div>Pembayaran Lunas</div>
                         </div>
                         {% endif %}
                     </div>
@@ -285,8 +346,8 @@
             <div class="card-body">
                 {% if registration.payment_status == 'unpaid' %}
                     <div class="mb-3">
-                        <h5>Total Biaya Pendaftaran</h5>
-                        <h3 class="text-primary">Rp 500.000,00</h3>
+                        <h5 class="fw-bold">Total Biaya Pendaftaran</h5>
+                        <h3 class="text-primary mb-2">Rp 500.000,00</h3>
                         <small class="text-muted">Silakan transfer ke rekening berikut:</small>
                         
                         <div class="alert alert-info mt-2">
@@ -305,8 +366,8 @@
                     </div>
 
                     <form method="POST" action="{{ url_for('upload_payment', reg_id=registration.id) }}" 
-                          enctype="multipart/form-data" class="border rounded p-3">
-                        <h5 class="mb-3">Upload Bukti Pembayaran</h5>
+                          enctype="multipart/form-data" class="border rounded p-3 bg-light">
+                        <h5 class="mb-3 fw-bold">Upload Bukti Pembayaran</h5>
                         <div class="mb-3">
                             <label for="payment_proof" class="form-label">File Bukti Transfer</label>
                             <input type="file" class="form-control" id="payment_proof" name="payment_proof" 
@@ -325,34 +386,46 @@
 
                 {% elif registration.payment_status == 'pending' %}
                     <div class="alert alert-warning">
-                        <i class="fas fa-clock me-2"></i> Bukti pembayaran Anda sedang diverifikasi
-                        <small class="d-block text-muted mt-1">
-                            Diunggah pada: {{ registration.payment_date.strftime('%d-%m-%Y %H:%M') }}
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-clock me-2 fs-5"></i>
+                            <div class="fw-bold">Bukti pembayaran Anda sedang diverifikasi</div>
+                        </div>
+                        <small class="d-block text-muted">
+                            <i class="fas fa-calendar-alt me-1"></i>Diunggah pada: {{ registration.payment_date.strftime('%d-%m-%Y %H:%M') }}
                         </small>
                     </div>
                     {% if registration.payment_proof %}
                     <div class="mt-3">
-                        <label class="form-label">Bukti Pembayaran:</label><br>
-                        <img src="{{ url_for('static', filename='uploads/payment_proofs/' + registration.payment_proof) }}" 
-                             class="img-fluid rounded border" style="max-height: 300px;">
+                        <label class="form-label fw-bold">Bukti Pembayaran:</label>
+                        <div class="text-center">
+                            <img src="{{ url_for('static', filename='uploads/payment_proofs/' + registration.payment_proof) }}" 
+                                class="img-fluid rounded border shadow-sm" style="max-height: 300px;">
+                        </div>
                     </div>
                     {% endif %}
 
                 {% elif registration.payment_status == 'paid' %}
                     <div class="alert alert-success">
-                        <i class="fas fa-check-circle me-2"></i> Pembayaran Telah Dikonfirmasi
-                        <small class="d-block mt-1">
-                            Jumlah: Rp {{ "{:,.2f}".format(registration.payment_amount) }}
-                        </small>
-                        <small class="d-block text-muted">
-                            Dikonfirmasi pada: {{ registration.payment_date.strftime('%d-%m-%Y %H:%M') }}
-                        </small>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="fas fa-check-circle me-2 fs-5"></i>
+                            <div class="fw-bold">Pembayaran Telah Dikonfirmasi</div>
+                        </div>
+                        <div class="ms-4">
+                            <div class="mb-1">
+                                <strong>Jumlah:</strong> Rp {{ "{:,.2f}".format(registration.payment_amount) }}
+                            </div>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar-check me-1"></i>Dikonfirmasi pada: {{ registration.payment_date.strftime('%d-%m-%Y %H:%M') }}
+                            </small>
+                        </div>
                     </div>
                     {% if registration.payment_proof %}
                     <div class="mt-3">
-                        <label class="form-label">Bukti Pembayaran:</label><br>
-                        <img src="{{ url_for('static', filename='uploads/payment_proofs/' + registration.payment_proof) }}" 
-                             class="img-fluid rounded border" style="max-height: 300px;">
+                        <label class="form-label fw-bold">Bukti Pembayaran:</label>
+                        <div class="text-center">
+                            <img src="{{ url_for('static', filename='uploads/payment_proofs/' + registration.payment_proof) }}" 
+                                class="img-fluid rounded border shadow-sm" style="max-height: 300px;">
+                        </div>
                     </div>
                     {% endif %}
                 {% endif %}
@@ -366,14 +439,18 @@
             <div class="card-header bg-info text-white">
                 <h4><i class="fas fa-bell me-2"></i>Notifikasi</h4>
             </div>
-            <div class="card-body">
+            <div class="card-body p-3">
                 {% for notification in notifications %}
                 <div class="alert alert-{{ notification.category }} alert-permanent fade show">
-                    <i class="fas fa-{% if notification.category == 'success' %}check-circle{% else %}times-circle{% endif %} me-2"></i>
-                    {{ notification.message }}
-                    <small class="d-block text-muted mt-1">
-                        <i class="fas fa-clock me-1"></i>{{ notification.created_at.strftime('%d-%m-%Y %H:%M') }}
-                    </small>
+                    <div class="d-flex">
+                        <i class="fas fa-{% if notification.category == 'success' %}check-circle{% elif notification.category == 'info' %}info-circle{% elif notification.category == 'warning' %}exclamation-triangle{% else %}times-circle{% endif %} me-2 fs-5"></i>
+                        <div>
+                            <div class="fw-bold">{{ notification.message }}</div>
+                            <small class="text-muted">
+                                <i class="fas fa-clock me-1"></i>{{ notification.created_at.strftime('%d-%m-%Y %H:%M') }}
+                            </small>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -382,148 +459,106 @@
         {% endif %}
     </div>
 
+    <!-- Main content -->
     <div class="col-md-8">
         <div class="card">
             <div class="card-header bg-primary text-white">
-                <h4>Informasi Pendaftaran</h4>
+                <h4><i class="fas fa-info-circle me-2"></i>Informasi Pendaftaran</h4>
             </div>
             <div class="card-body">
                 {% if registration %}
                 <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th width="30%">Nama Lengkap</th>
-                            <td>{{ registration.full_name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Tanggal Lahir</th>
-                            <td>{{ registration.birth_date.strftime('%d-%m-%Y') }}</td>
-                        </tr>
-                        <tr>
-                            <th>Jenis Kelamin</th>
-                            <td>{{ registration.gender }}</td>
-                        </tr>
-                        <tr>
-                            <th>Alamat</th>
-                            <td>{{ registration.address }}</td>
-                        </tr>
-                        <tr>
-                            <th>No. Telepon</th>
-                            <td>{{ registration.phone }}</td>
-                        </tr>
-                        <tr>
-                            <th>Asal Sekolah</th>
-                            <td>{{ registration.previous_school }}</td>
-                        </tr>
-                        <tr>
-                            <th>Nama Orang Tua</th>
-                            <td>{{ registration.parent_name }}</td>
-                        </tr>
-                        <tr>
-                            <th>No. Telepon Orang Tua</th>
-                            <td>{{ registration.parent_phone }}</td>
-                        </tr>
-                        <tr>
-                            <th>Pekerjaan Orang Tua</th>
-                            <td>{{ registration.parent_occupation }}</td>
-                        </tr>
-                        <tr>
-                            <th>Tanggal Daftar</th>
-                            <td>{{ registration.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
-                        </tr>
-                        <tr>
-                            <th>Status</th>
-                            <td>
-                                {% if registration.status == 'pending' %}
-                                <span class="badge bg-warning">Menunggu</span>
-                                {% elif registration.status == 'approved' %}
-                                <span class="badge bg-success">Diterima</span>
-                                {% elif registration.status == 'rejected' %}
-                                <span class="badge bg-danger">Ditolak</span>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Status Pembayaran</th>
-                            <td>
-                                {% if registration.payment_status == 'unpaid' %}
-                                <span class="badge bg-danger">Belum Bayar</span>
-                                {% elif registration.payment_status == 'pending' %}
-                                <span class="badge bg-warning">Menunggu Verifikasi</span>
-                                {% elif registration.payment_status == 'paid' %}
-                                <span class="badge bg-success">Lunas</span>
-                                <small class="d-block text-muted mt-1">
-                                    Dibayar pada: {{ registration.payment_date.strftime('%d-%m-%Y %H:%M') }}
-                                </small>
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% if registration.payment_amount > 0 %}
-                        <tr>
-                            <th>Jumlah Pembayaran</th>
-                            <td>Rp {{ "{:,.2f}".format(registration.payment_amount) }}</td>
-                        </tr>
-                        {% endif %}
-                        {% if registration.status == 'approved' and registration.payment_status == 'unpaid' %}
-                        <tr>
-                            <th>Upload Bukti Pembayaran</th>
-                            <td>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <form method="POST" action="{{ url_for('upload_payment', reg_id=registration.id) }}" enctype="multipart/form-data">
-                                            <div class="mb-3">
-                                                <label class="form-label">Jumlah yang harus dibayar:</label>
-                                                <h4 class="text-primary">Rp 500.000,00</h4>
-                                                <small class="text-muted">Silakan transfer ke rekening berikut:</small>
-                                                <div class="alert alert-info mt-2">
-                                                    <div class="d-flex align-items-center">
-                                                        <div>
-                                                            <strong>Bank BRI</strong><br>
-                                                            No. Rekening: 1234-5678-9012-3456<br>
-                                                            Atas Nama: Universitas Karya Bangsa
-                                                        </div>
-                                                        <button type="button" class="btn btn-sm btn-outline-primary ms-auto" 
-                                                                onclick="copyToClipboard('1234567890123456')">
-                                                            <i class="fas fa-copy"></i> Salin
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="payment_proof" class="form-label">Upload Bukti Transfer</label>
-                                                <input type="file" class="form-control" id="payment_proof" name="payment_proof" 
-                                                       accept="image/jpeg,image/png,image/jpg" required>
-                                                <small class="text-muted">Format: JPG, JPEG, atau PNG. Maksimal 2MB</small>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="payment_date" class="form-label">Tanggal Transfer</label>
-                                                <input type="datetime-local" class="form-control" id="payment_date" name="payment_date" required>
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="fas fa-upload me-1"></i> Upload Bukti Pembayaran
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        {% elif registration.status == 'approved' and registration.payment_status == 'pending' %}
-                        <tr>
-                            <th>Status Verifikasi</th>
-                            <td>
-                                <div class="alert alert-warning mb-0">
-                                    <i class="fas fa-clock me-2"></i> Bukti pembayaran Anda sedang diverifikasi
-                                </div>
-                            </td>
-                        </tr>
-                        {% endif %}
+                    <table class="table table-bordered table-hover">
+                        <tbody>
+                            <tr>
+                                <th class="bg-light" width="30%"><i class="fas fa-user me-2"></i>Nama Lengkap</th>
+                                <td>{{ registration.full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-calendar-day me-2"></i>Tanggal Lahir</th>
+                                <td>{{ registration.birth_date.strftime('%d-%m-%Y') }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-venus-mars me-2"></i>Jenis Kelamin</th>
+                                <td>{{ registration.gender }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-map-marker-alt me-2"></i>Alamat</th>
+                                <td>{{ registration.address }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-phone me-2"></i>No. Telepon</th>
+                                <td>{{ registration.phone }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-school me-2"></i>Asal Sekolah</th>
+                                <td>{{ registration.previous_school }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-user-friends me-2"></i>Nama Orang Tua</th>
+                                <td>{{ registration.parent_name }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-phone me-2"></i>No. Telepon Orang Tua</th>
+                                <td>{{ registration.parent_phone }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-briefcase me-2"></i>Pekerjaan Orang Tua</th>
+                                <td>{{ registration.parent_occupation }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-calendar-plus me-2"></i>Tanggal Daftar</th>
+                                <td>{{ registration.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-clipboard-check me-2"></i>Status</th>
+                                <td>
+                                    {% if registration.status == 'pending' %}
+                                    <span class="badge bg-warning">Menunggu</span>
+                                    {% elif registration.status == 'approved' %}
+                                    <span class="badge bg-success">Diterima</span>
+                                    {% elif registration.status == 'rejected' %}
+                                    <span class="badge bg-danger">Ditolak</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-money-check-alt me-2"></i>Status Pembayaran</th>
+                                <td>
+                                    {% if registration.payment_status == 'unpaid' %}
+                                    <span class="badge bg-danger">Belum Bayar</span>
+                                    {% elif registration.payment_status == 'pending' %}
+                                    <span class="badge bg-warning">Menunggu Verifikasi</span>
+                                    {% elif registration.payment_status == 'paid' %}
+                                    <span class="badge bg-success">Lunas</span>
+                                    <small class="d-block text-muted mt-1">
+                                        <i class="fas fa-calendar-check me-1"></i>Dibayar pada: {{ registration.payment_date.strftime('%d-%m-%Y %H:%M') }}
+                                    </small>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% if registration.payment_amount > 0 %}
+                            <tr>
+                                <th class="bg-light"><i class="fas fa-money-bill-wave me-2"></i>Jumlah Pembayaran</th>
+                                <td class="fw-bold text-success">Rp {{ "{:,.2f}".format(registration.payment_amount) }}</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
                     </table>
                 </div>
                 {% else %}
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle me-2"></i> Anda belum mengisi formulir pendaftaran.
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle me-3 fs-3"></i>
+                        <div>
+                            <div class="fw-bold mb-2">Anda belum mengisi formulir pendaftaran</div>
+                            <p class="mb-3">Silakan isi formulir pendaftaran untuk melanjutkan proses pendaftaran.</p>
+                            <a href="{{ url_for('registration_form') }}" class="btn btn-primary">
+                                <i class="fas fa-edit me-1"></i> Isi Formulir
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <a href="{{ url_for('registration_form') }}" class="btn btn-primary">Isi Formulir</a>
                 {% endif %}
             </div>
         </div>
@@ -545,10 +580,10 @@ setInterval(function() {
 // Initialize components when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     // Add animation for status alerts
-    const statusAlert = document.querySelector('.alert-permanent');
-    if (statusAlert) {
-        statusAlert.style.animation = 'fadeIn 0.5s ease-in';
-    }
+    const statusAlerts = document.querySelectorAll('.alert-permanent');
+    statusAlerts.forEach(alert => {
+        alert.style.animation = 'fadeIn 0.5s ease-in';
+    });
 
     // Initialize payment date input with current time
     const paymentDateInput = document.getElementById('payment_date');
@@ -571,10 +606,14 @@ function copyToClipboard(text) {
             
             // Show copy feedback
             btn.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+            btn.classList.add('btn-success');
+            btn.classList.remove('btn-outline-primary');
             
             // Reset button text after delay
             setTimeout(() => {
                 btn.innerHTML = originalText;
+                btn.classList.remove('btn-success');
+                btn.classList.add('btn-outline-primary');
             }, COPY_FEEDBACK_DURATION);
         })
         .catch((err) => {
