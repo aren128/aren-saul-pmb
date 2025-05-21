@@ -277,39 +277,33 @@
     .step {
         display: flex;
         margin-bottom: 2.5rem;
-        transition: all 0.4s ease;
-        opacity: 0;
-        animation: fadeInLeft 0.7s ease forwards;
         position: relative;
+        opacity: 1;
+        transform: translateY(0);
+        transition: all 0.5s ease;
     }
 
-    .step:hover {
-        transform: translateX(10px);
+    .step:nth-child(1) {
+        animation: slideIn 0.5s ease 0.2s forwards;
     }
 
-    @keyframes fadeInLeft {
-        from {
-            opacity: 0;
-            transform: translateX(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
+    .step:nth-child(2) {
+        animation: slideIn 0.5s ease 0.4s forwards;
     }
 
-    @keyframes fadeInRight {
-        from {
-            opacity: 0;
-            transform: translateX(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateX(0);
-        }
+    .step:nth-child(3) {
+        animation: slideIn 0.5s ease 0.6s forwards;
     }
 
-    @keyframes fadeInUp {
+    .step:nth-child(4) {
+        animation: slideIn 0.5s ease 0.8s forwards;
+    }
+
+    .step:nth-child(5) {
+        animation: slideIn 0.5s ease 1s forwards;
+    }
+
+    @keyframes slideIn {
         from {
             opacity: 0;
             transform: translateY(30px);
@@ -320,26 +314,20 @@
         }
     }
 
-    @keyframes fadeInDown {
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    /* Add this to ensure the animation state is preserved */
+    .step {
+        animation-fill-mode: both;
     }
 
-    .fade-in {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .fade-in.visible {
-        opacity: 1;
-        transform: translateY(0);
+    .step:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 50px;
+        left: 25px;
+        width: 2px;
+        height: calc(100% + 30px);
+        background: #e5e7eb;
+        z-index: 0;
     }
 
     .step-number {
@@ -360,21 +348,10 @@
         z-index: 1;
     }
 
-    .step:not(:last-child)::after {
-        content: '';
-        position: absolute;
-        top: 50px;
-        left: 25px;
-        width: 2px;
-        height: calc(100% + 30px);
-        background: #e5e7eb;
-        z-index: 0;
-    }
-
     .step-content {
         background: white;
         padding: 2rem;
-        border-radius: 0.8rem;
+        border-radius: 1rem;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         flex-grow: 1;
         transition: all 0.3s ease;
@@ -382,8 +359,30 @@
     }
 
     .step:hover .step-content {
-        background: linear-gradient(to right, #f8fafc, white);
+        transform: translateX(10px);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     .card {
@@ -520,23 +519,20 @@
     }
 
     .table thead th {
-        background: #f1f5f9;
-        border: none;
-        padding: 1.2rem;
+        background-color: #f8f9fa;
         font-weight: 600;
-        color: #1e293b;
         text-transform: uppercase;
-        font-size: 0.9rem;
-        letter-spacing: 1px;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
     }
 
     .table tbody tr {
         transition: all 0.3s ease;
-        border-bottom: 1px solid #f1f5f9;
     }
 
     .table tbody tr:hover {
-        background-color: #f8fafc;
+        background-color: rgba(59, 130, 246, 0.05);
+        transform: scale(1.01);
     }
 
     .badge {
@@ -1107,6 +1103,59 @@
     .modal-footer {
         border-top: 1px solid rgba(0,0,0,0.05);
     }
+
+    .search-box {
+        width: 300px;
+    }
+
+    .search-box input {
+        border-radius: 20px;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        border: none;
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .search-box input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-box input:focus {
+        background-color: rgba(255, 255, 255, 0.3);
+        color: white;
+        box-shadow: none;
+    }
+
+    .search-box .input-group-text,
+    .search-box .form-control {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .search-box .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-box .form-control:focus {
+        box-shadow: none;
+    }
+
+    .table thead th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+        background-color: rgba(59, 130, 246, 0.05);
+        transform: scale(1.01);
+    }
 </style>
 
 <!-- Back to top button -->
@@ -1130,6 +1179,147 @@
                     <i class="fas fa-tachometer-alt me-2"></i>Dashboard
                 </a>
             {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Add after Hero Section -->
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h2 class="section-title">Cara Pendaftaran</h2>
+            <p class="text-muted">Ikuti langkah-langkah berikut untuk mendaftar di Universitas Karya Bangsa</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Step 1 -->
+            <div class="step fade-in">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h4><i class="fas fa-user-plus text-primary me-2"></i>Registrasi Akun</h4>
+                    <p>Buat akun dengan mengisi data berikut:</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Username</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Email aktif</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Password</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            {% if not session.get('user_id') %}
+                            <a href="{{ url_for('auth.register') }}" class="btn btn-primary">
+                                <i class="fas fa-arrow-right me-2"></i>Daftar Sekarang
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step fade-in">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h4><i class="fas fa-file-alt text-primary me-2"></i>Lengkapi Data Diri</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-2">Data Pribadi:</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Nama lengkap</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Jenis kelamin</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Agama</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Nomor telepon</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Email</li>
+                                 
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Tempat & tanggal lahir</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Alamat lengkap</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-2">Data Akademik:</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Asal sekolah</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step fade-in">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h4><i class="fas fa-upload text-primary me-2"></i>Upload Dokumen</h4>
+                    <p>Siapkan scan dokumen berikut:</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Pas foto 4x6</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Ijazah/SKL</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Format file: JPG/PNG/PDF<br>
+                                Maksimal ukuran: 2MB
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step fade-in">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h4><i class="fas fa-money-bill-wave text-primary me-2"></i>Pembayaran Pendaftaran</h4>
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <div class="alert alert-primary mb-0">
+                                <strong>Biaya Pendaftaran: Rp 500.000</strong>
+                                <hr>
+                                <p class="mb-2">Transfer ke rekening:</p>
+                                <p class="mb-0">
+                                    <strong>Bank ABC</strong><br>
+                                    No. Rek: 1234-5678-9012<br>
+                                    a.n. Universitas Karya Bangsa
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Upload bukti pembayaran</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Tunggu verifikasi (1x24 jam)</li>
+                                <li><i class="fas fa-check-circle text-success me-2"></i>Cek status di dashboard</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Step -->
+            <div class="step fade-in">
+                <div class="step-number"><i class="fas fa-flag-checkered"></i></div>
+                <div class="step-content text-center">
+                    <h4><i class="fas fa-check-circle text-success me-2"></i>Selesai</h4>
+                    <p>Setelah semua langkah selesai, tunggu pengumuman penerimaan yang akan disampaikan melalui:</p>
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+                            <div class="alert alert-success">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-envelope me-2"></i>Email terdaftar</li>
+                                    <li><i class="fas fa-bell me-2"></i>Notifikasi dashboard</li>
+                                    <li><i class="fas fa-phone me-2"></i>SMS/WhatsApp</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1600,6 +1790,124 @@
         </div>
     </div>
 </div>
+<div class="container py-5">
+    <!-- Registration Statistics -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="section-title">Statistik Pendaftaran</h2>
+            <p class="text-muted">Informasi jumlah pendaftar terkini</p>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="stat-item">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="counter" data-target="{{ registrations|length }}">0</div>
+                <h5>Total Pendaftar</h5>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="stat-item">
+                <div class="stat-icon text-success">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="counter" data-target="{{ registrations|selectattr('status', 'equalto', 'approved')|list|length }}">0</div>
+                <h5>Pendaftar Diterima</h5>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="stat-item">
+                <div class="stat-icon text-danger">
+                    <i class="fas fa-user-times"></i>
+                </div>
+                <div class="counter" data-target="{{ registrations|selectattr('status', 'equalto', 'rejected')|list|length }}">0</div>
+                <h5>Pendaftar Ditolak</h5>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="stat-item">
+                <div class="stat-icon text-warning">
+                    <i class="fas fa-user-clock"></i>
+                </div>
+                <div class="counter" data-target="{{ registrations|selectattr('status', 'equalto', 'pending')|list|length }}">0</div>
+                <h5>Menunggu Verifikasi</h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- Faculty Statistics -->
+    <div class="row mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="section-title">Statistik per Fakultas</h2>
+            <p class="text-muted">Persebaran pendaftar berdasarkan fakultas</p>
+        </div>
+        {% set faculties = {
+            'teknik': ('Fakultas Teknik', 'fa-cogs'),
+            'ekonomi': ('Fakultas Ekonomi', 'fa-chart-line'),
+            'hukum': ('Fakultas Hukum', 'fa-balance-scale'),
+            'kedokteran': ('Fakultas Kedokteran', 'fa-heartbeat'),
+            'fisip': ('Fakultas Ilmu Sosial dan Politik', 'fa-users')
+        } %}
+
+        {% for faculty_key, (faculty_name, icon) in faculties.items() %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fas {{ icon }} fa-2x text-primary me-3"></i>
+                        <h5 class="card-title mb-0">{{ faculty_name }}</h5>
+                    </div>
+                    {% set faculty_count = registrations|selectattr('faculty', 'equalto', faculty_key)|list|length %}
+                    {% set faculty_approved = registrations|selectattr('faculty', 'equalto', faculty_key)|selectattr('status', 'equalto', 'approved')|list|length %}
+                    <div class="stats">
+                        <div class="mb-2">Total Pendaftar: <strong>{{ faculty_count }}</strong></div>
+                        <div class="mb-2">Diterima: <strong class="text-success">{{ faculty_approved }}</strong></div>
+                        <div class="progress">
+                            {% if faculty_count > 0 %}
+                            {% set percentage = (faculty_approved / faculty_count * 100)|round|int %}
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ percentage }}%" 
+                                 aria-valuenow="{{ percentage }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">{{ percentage }}%</div>
+                            {% else %}
+                            <div class="progress-bar" role="progressbar" style="width: 0%">0%</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Add this JavaScript at the bottom of the page -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate counters
+    const counters = document.querySelectorAll('.counter');
+    const speed = 200;
+
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const increment = target / speed;
+
+        let current = 0;
+        const updateCounter = () => {
+            if (current < target) {
+                current += increment;
+                counter.textContent = Math.ceil(current);
+                setTimeout(updateCounter, 1);
+            } else {
+                counter.textContent = target;
+            }
+        };
+
+        updateCounter();
+    });
+});
+</script>
 
 <!-- Add this script at the bottom of your file -->
 <script>
@@ -1637,5 +1945,110 @@ document.addEventListener('DOMContentLoaded', function() {
                 `modal-header bg-${button.dataset.color} text-white`;
         });
     }
+});
+</script>
+
+<!-- Add before the closing container div -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="fas fa-users me-2"></i>Daftar Pendaftar Terkini</h4>
+                    <div class="search-box">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent border-0">
+                                <i class="fas fa-search text-white"></i>
+                            </span>
+                            <input type="text" id="searchStudent" class="form-control bg-transparent border-0 text-white" placeholder="Cari nama pendaftar...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="studentTable">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Nama Lengkap</th>
+                                <th>Fakultas</th>
+                                <th>Program Studi</th>
+                                <th>Status</th>
+                                <th>Tanggal Daftar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reg in latest_registrations %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ reg.full_name }}</td>
+                                <td>
+                                    {% if reg.faculty == 'teknik' %}
+                                        <span class="text-primary">
+                                            <i class="fas fa-cogs me-1"></i>Fakultas Teknik
+                                        </span>
+                                    {% elif reg.faculty == 'ekonomi' %}
+                                        <span class="text-success">
+                                            <i class="fas fa-chart-line me-1"></i>Fakultas Ekonomi
+                                        </span>
+                                    {% elif reg.faculty == 'hukum' %}
+                                        <span class="text-warning">
+                                            <i class="fas fa-balance-scale me-1"></i>Fakultas Hukum
+                                        </span>
+                                    {% elif reg.faculty == 'kedokteran' %}
+                                        <span class="text-danger">
+                                            <i class="fas fa-user-md me-1"></i>Fakultas Kedokteran
+                                        </span>
+                                    {% elif reg.faculty == 'fisip' %}
+                                        <span class="text-info">
+                                            <i class="fas fa-users me-1"></i>Fakultas FISIP
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ reg.major }}</td>
+                                <td>
+                                    {% if reg.status == 'pending' %}
+                                        <span class="badge bg-warning">Menunggu</span>
+                                    {% elif reg.status == 'approved' %}
+                                        <span class="badge bg-success">Diterima</span>
+                                    {% elif reg.status == 'rejected' %}
+                                        <span class="badge bg-danger">Ditolak</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ reg.created_at.strftime('%d-%m-%Y') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add this JavaScript before the closing body tag -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchStudent');
+    const table = document.getElementById('studentTable');
+    const rows = table.getElementsByTagName('tr');
+
+    searchInput.addEventListener('keyup', function() {
+        const searchText = searchInput.value.toLowerCase();
+
+        // Start from index 1 to skip header row
+        for (let i = 1; i < rows.length; i++) {
+            const nameCell = rows[i].getElementsByTagName('td')[1];
+            if (nameCell) {
+                const name = nameCell.textContent || nameCell.innerText;
+                if (name.toLowerCase().indexOf(searchText) > -1) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    });
 });
 </script>

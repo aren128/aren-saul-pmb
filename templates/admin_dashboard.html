@@ -369,6 +369,158 @@
         </div>
     </div>
 </div>
+
+<!-- Add this after your statistics section -->
+<div class="card mt-4">
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fas fa-list me-2"></i>Daftar Pendaftar</h4>
+        <div class="search-box">
+            <input type="text" id="searchInput" class="form-control" placeholder="Cari nama pendaftar...">
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover" id="registrationTable">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Nama Lengkap</th>
+                        <th>Fakultas</th>
+                        <th>Program Studi</th>
+                        <th>Status</th>
+                        <th>Tanggal Daftar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reg in registrations %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ reg.full_name }}</td>
+                        <td>
+                            {% if reg.faculty == 'teknik' %}
+                                Fakultas Teknik
+                            {% elif reg.faculty == 'ekonomi' %}
+                                Fakultas Ekonomi
+                            {% elif reg.faculty == 'hukum' %}
+                                Fakultas Hukum
+                            {% elif reg.faculty == 'kedokteran' %}
+                                Fakultas Kedokteran
+                            {% elif reg.faculty == 'fisip' %}
+                                Fakultas Ilmu Sosial dan Politik
+                            {% endif %}
+                        </td>
+                        <td>{{ reg.major }}</td>
+                        <td>
+                            {% if reg.status == 'pending' %}
+                            <span class="badge bg-warning">Menunggu</span>
+                            {% elif reg.status == 'approved' %}
+                            <span class="badge bg-success">Diterima</span>
+                            {% elif reg.status == 'rejected' %}
+                            <span class="badge bg-danger">Ditolak</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ reg.created_at.strftime('%d-%m-%Y') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add this CSS to your style section -->
+<style>
+.search-box {
+    width: 300px;
+}
+
+.search-box input {
+    border-radius: 20px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-box input:focus {
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
+    box-shadow: none;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+.badge {
+    padding: 0.5em 0.8em;
+    font-weight: 500;
+}
+</style>
+
+<!-- Add this JavaScript for search functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('registrationTable');
+    const rows = table.getElementsByTagName('tr');
+
+    searchInput.addEventListener('keyup', function() {
+        const searchText = searchInput.value.toLowerCase();
+
+        for (let i = 1; i < rows.length; i++) {
+            const nameCell = rows[i].getElementsByTagName('td')[1];
+            if (nameCell) {
+                const name = nameCell.textContent || nameCell.innerText;
+                if (name.toLowerCase().indexOf(searchText) > -1) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    });
+
+    // Add animation when showing/hiding rows
+    const originalDisplay = [];
+    for (let i = 1; i < rows.length; i++) {
+        originalDisplay[i] = rows[i].style.display;
+    }
+
+    function updateTable(searchText) {
+        for (let i = 1; i < rows.length; i++) {
+            const nameCell = rows[i].getElementsByTagName('td')[1];
+            if (nameCell) {
+                const name = nameCell.textContent || nameCell.innerText;
+                if (name.toLowerCase().indexOf(searchText.toLowerCase()) > -1) {
+                    rows[i].style.display = originalDisplay[i];
+                    rows[i].style.opacity = '1';
+                } else {
+                    rows[i].style.opacity = '0';
+                    setTimeout(() => {
+                        rows[i].style.display = 'none';
+                    }, 500);
+                }
+            }
+        }
+    }
+
+    searchInput.addEventListener('input', function() {
+        updateTable(this.value);
+    });
+});
+</script>
 {% endblock %}
 
 {% block scripts %}

@@ -43,9 +43,17 @@ def allowed_avatar_file(filename):
 @app.route('/')
 @app.route('/home')
 def home():
+    # Get all registrations for statistics
+    registrations = Registration.query.all()
     
-    registrations = Registration.query.order_by(Registration.created_at.desc()).limit(5).all()
-    return render_template('index.html', registrations=registrations)
+    # Get latest 10 registrations for the table
+    latest_registrations = Registration.query.order_by(
+        Registration.created_at.desc()
+    ).limit(10).all()
+    
+    return render_template('index.html',
+                         registrations=registrations,
+                         latest_registrations=latest_registrations)
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
