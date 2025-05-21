@@ -90,6 +90,40 @@
                 <label for="parent_occupation" class="form-label">Pekerjaan Orang Tua</label>
                 <input type="text" class="form-control" id="parent_occupation" name="parent_occupation" required>
             </div>
+
+            <!-- Additional Fields -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="faculty" class="form-label">Fakultas</label>
+                    <select class="form-select" id="faculty" name="faculty" required>
+                        <option value="">-- Pilih Fakultas --</option>
+                        <option value="teknik">Fakultas Teknik</option>
+                        <option value="ekonomi">Fakultas Ekonomi</option>
+                        <option value="hukum">Fakultas Hukum</option>
+                        <option value="kedokteran">Fakultas Kedokteran</option>
+                        <option value="fisip">Fakultas Ilmu Sosial dan Politik</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="major" class="form-label">Program Studi</label>
+                    <select class="form-select" id="major" name="major" required>
+                        <option value="">-- Pilih Program Studi --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="religion" class="form-label">Agama</label>
+                <select class="form-select" id="religion" name="religion" required>
+                    <option value="">-- Pilih Agama --</option>
+                    <option value="Islam">Islam</option>
+                    <option value="Kristen">Kristen</option>
+                    <option value="Katolik">Katolik</option>
+                    <option value="Hindu">Hindu</option>
+                    <option value="Buddha">Buddha</option>
+                    <option value="Konghucu">Konghucu</option>
+                </select>
+            </div>
             
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary" id="submitBtn">
@@ -102,11 +136,52 @@
 {% endblock %}
 
 {% block scripts %}
+{{ super() }}
 <script>
-document.getElementById('registrationForm').addEventListener('submit', function(e) {
-    var submitBtn = document.getElementById('submitBtn');
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Mengirim...';
+const majorsByFaculty = {
+    'teknik': [
+        'Teknik Informatika',
+        'Teknik Sipil', 
+        'Teknik Elektro',
+        'Teknik Mesin',
+        'Teknik Industri'
+    ],
+    'ekonomi': [
+        'Manajemen',
+        'Akuntansi',
+        'Ekonomi Pembangunan', 
+        'Bisnis Digital'
+    ],
+    'hukum': [
+        'Ilmu Hukum'
+    ],
+    'kedokteran': [
+        'Pendidikan Dokter',
+        'Keperawatan',
+        'Farmasi',
+        'Kesehatan Masyarakat'
+    ],
+    'fisip': [
+        'Ilmu Politik',
+        'Administrasi Publik',
+        'Hubungan Internasional',
+        'Ilmu Komunikasi'
+    ]
+};
+
+document.getElementById('faculty').addEventListener('change', function() {
+    const majorSelect = document.getElementById('major');
+    majorSelect.innerHTML = '<option value="">-- Pilih Program Studi --</option>';
+    
+    const selectedFaculty = this.value;
+    if (selectedFaculty) {
+        majorsByFaculty[selectedFaculty].forEach(major => {
+            const option = document.createElement('option');
+            option.value = major;
+            option.textContent = major;
+            majorSelect.appendChild(option);
+        });
+    }
 });
 </script>
 {% endblock %}

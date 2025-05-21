@@ -14,6 +14,8 @@
                     <tr>
                         <th>No.</th>
                         <th>Nama</th>
+                        <th>Fakultas</th>
+                        <th>Program Studi</th>
                         <th>Waktu Sekolah</th>
                         <th>Status</th>
                         <th>Status Pembayaran</th>
@@ -26,6 +28,20 @@
                     <tr>
                         <td>{{ loop.index }}</td>
                         <td>{{ reg.full_name }}</td>
+                        <td>
+                            {% if reg.faculty == 'teknik' %}
+                                Fakultas Teknik
+                            {% elif reg.faculty == 'ekonomi' %}
+                                Fakultas Ekonomi
+                            {% elif reg.faculty == 'hukum' %}
+                                Fakultas Hukum
+                            {% elif reg.faculty == 'kedokteran' %}
+                                Fakultas Kedokteran
+                            {% elif reg.faculty == 'fisip' %}
+                                Fakultas Ilmu Sosial dan Politik
+                            {% endif %}
+                        </td>
+                        <td>{{ reg.major }}</td>
                         <td>
                             {% if reg.school_time == 'pagi' %}
                                 Pagi (07:00 - 13:00)
@@ -178,6 +194,107 @@
                     <div class="alert alert-info mb-0">
                         Belum ada data pendaftaran.
                     </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Faculty Distribution Card -->
+    <div class="col-md-4 mt-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4><i class="fas fa-university me-2"></i> Fakultas</h4>
+            </div>
+            <div class="card-body">
+                {% set faculties = {
+                    'teknik': 'Fakultas Teknik',
+                    'ekonomi': 'Fakultas Ekonomi',
+                    'hukum': 'Fakultas Hukum',
+                    'kedokteran': 'Fakultas Kedokteran',
+                    'fisip': 'Fakultas Ilmu Sosial dan Politik'
+                } %}
+                
+                {% if total_students > 0 %}
+                    {% for faculty_key, faculty_name in faculties.items() %}
+                        {% set faculty_count = registrations|selectattr('faculty', 'equalto', faculty_key)|list|length %}
+                        {% set faculty_percentage = (faculty_count / total_students * 100)|round|int %}
+                        
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small>{{ faculty_name }}</small>
+                                <small>{{ faculty_count }} ({{ faculty_percentage }}%)</small>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-primary" role="progressbar" 
+                                     style="width: {{ faculty_percentage }}%"></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info mb-0">Belum ada data pendaftaran.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Religion Distribution Card -->
+    <div class="col-md-4 mt-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4><i class="fas fa-pray me-2"></i> Agama</h4>
+            </div>
+            <div class="card-body">
+                {% set religions = ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'] %}
+                
+                {% if total_students > 0 %}
+                    {% for religion in religions %}
+                        {% set religion_count = registrations|selectattr('religion', 'equalto', religion)|list|length %}
+                        {% set religion_percentage = (religion_count / total_students * 100)|round|int %}
+                        
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small>{{ religion }}</small>
+                                <small>{{ religion_count }} ({{ religion_percentage }}%)</small>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-success" role="progressbar" 
+                                     style="width: {{ religion_percentage }}%"></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info mb-0">Belum ada data pendaftaran.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Program Study Distribution Card -->
+    <div class="col-md-4 mt-4">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4><i class="fas fa-graduation-cap me-2"></i> Program Studi</h4>
+            </div>
+            <div class="card-body">
+                {% if total_students > 0 %}
+                    {% set all_majors = registrations|map(attribute='major')|list|unique|list %}
+                    {% for major in all_majors %}
+                        {% set major_count = registrations|selectattr('major', 'equalto', major)|list|length %}
+                        {% set major_percentage = (major_count / total_students * 100)|round|int %}
+                        
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <small>{{ major }}</small>
+                                <small>{{ major_count }} ({{ major_percentage }}%)</small>
+                            </div>
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar bg-warning" role="progressbar" 
+                                     style="width: {{ major_percentage }}%"></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info mb-0">Belum ada data pendaftaran.</div>
                 {% endif %}
             </div>
         </div>

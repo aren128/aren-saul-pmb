@@ -1,0 +1,160 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4><i class="fas fa-tasks me-2"></i>Progress Pendaftaran</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <!-- Progress Timeline -->
+            <div class="col-md-12 mb-4">
+                {% set total_steps = 4 %}
+                {% set completed_steps = 0 %}
+                
+                {% if registration %}
+                    {% set completed_steps = completed_steps + 1 %}
+                    {% if registration.foto_file %}
+                        {% set completed_steps = completed_steps + 1 %}
+                    {% endif %}
+                    {% if registration.ijazah_file %}
+                        {% set completed_steps = completed_steps + 1 %}
+                    {% endif %}
+                    {% if registration.payment_status == 'paid' %}
+                        {% set completed_steps = completed_steps + 1 %}
+                    {% endif %}
+                {% endif %}
+                
+                {% set progress_percentage = (completed_steps / total_steps * 100) | round %}
+                
+                <div class="progress mb-3" style="height: 25px;">
+                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" 
+                         role="progressbar" 
+                         style="width: {{ progress_percentage }}%"
+                         aria-valuenow="{{ progress_percentage }}" 
+                         aria-valuemin="0" 
+                         aria-valuemax="100">
+                        {{ progress_percentage }}% Selesai
+                    </div>
+                </div>
+
+                <div class="timeline mt-4">
+                    <!-- Step 1: Registration -->
+                    <div class="timeline-item">
+                        <div class="timeline-marker {% if completed_steps >= 1 %}bg-success{% else %}bg-secondary{% endif %}"></div>
+                        <div class="timeline-content">
+                            <h5>Pendaftaran</h5>
+                            <p>{{ 'Selesai' if completed_steps >= 1 else 'Belum Selesai' }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Document Upload -->
+                    <div class="timeline-item">
+                        <div class="timeline-marker {% if registration.foto_file %}bg-success{% else %}bg-secondary{% endif %}"></div>
+                        <div class="timeline-content">
+                            <h5>Upload Foto</h5>
+                            <p>{{ 'Selesai' if registration.foto_file else 'Belum Upload' }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Certificate Upload -->
+                    <div class="timeline-item">
+                        <div class="timeline-marker {% if registration.ijazah_file %}bg-success{% else %}bg-secondary{% endif %}"></div>
+                        <div class="timeline-content">
+                            <h5>Upload Ijazah</h5>
+                            <p>{{ 'Selesai' if registration.ijazah_file else 'Belum Upload' }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Payment -->
+                    <div class="timeline-item">
+                        <div class="timeline-marker {% if registration.payment_status == 'paid' %}bg-success{% elif registration.payment_status == 'pending' %}bg-warning{% else %}bg-secondary{% endif %}"></div>
+                        <div class="timeline-content">
+                            <h5>Pembayaran</h5>
+                            <p>
+                                {% if registration.payment_status == 'paid' %}
+                                    Lunas
+                                {% elif registration.payment_status == 'pending' %}
+                                    Menunggu Verifikasi
+                                {% else %}
+                                    Belum Bayar
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Details -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Status Dokumen</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Formulir Pendaftaran
+                                {% if registration %}
+                                    <span class="badge bg-success">Selesai</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Belum</span>
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Foto
+                                {% if registration and registration.foto_file %}
+                                    <span class="badge bg-success">Selesai</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Belum</span>
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Ijazah
+                                {% if registration and registration.ijazah_file %}
+                                    <span class="badge bg-success">Selesai</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Belum</span>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Status -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Status Pembayaran</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if registration %}
+                            {% if registration.payment_status == 'paid' %}
+                                <div class="alert alert-success mb-0">
+                                    <i class="fas fa-check-circle me-2"></i>Pembayaran Lunas
+                                    <small class="d-block mt-2">
+                                        Dibayar pada: {{ registration.payment_date.strftime('%d-%m-%Y %H:%M') }}
+                                    </small>
+                                </div>
+                            {% elif registration.payment_status == 'pending' %}
+                                <div class="alert alert-warning mb-0">
+                                    <i class="fas fa-clock me-2"></i>Menunggu Verifikasi
+                                </div>
+                            {% else %}
+                                <div class="alert alert-danger mb-0">
+                                    <i class="fas fa-times-circle me-2"></i>Belum Bayar
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="alert alert-info mb-0">
+                                <i class="fas fa-info-circle me-2"></i>Silakan lengkapi pendaftaran terlebih dahulu
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

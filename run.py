@@ -26,8 +26,19 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 # Register the auth blueprint
 app.register_blueprint(auth, url_prefix='/auth')
 
+# Add to existing configurations
+AVATAR_FOLDER = os.path.join('static', 'images', 'avatars')
+app.config['AVATAR_FOLDER'] = AVATAR_FOLDER
+
+# Create avatar directory if it doesn't exist
+os.makedirs(os.path.join(app.static_folder, 'images', 'avatars'), exist_ok=True)
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def allowed_avatar_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
 
 @app.route('/')
 @app.route('/home')
@@ -70,6 +81,9 @@ def user_dashboard():
     if 'user_id' not in session:
         return redirect(url_for('auth.login'))
         
+    # Get user data
+    user = User.query.get(session['user_id'])
+    
     # Get registration data for current user
     registration = Registration.query.filter_by(user_id=session['user_id']).first()
     
@@ -85,6 +99,7 @@ def user_dashboard():
     db.session.commit()
     
     return render_template('dashboard.html', 
+                         user=user,  # Pass the user object
                          registration=registration,
                          notifications=notifications)
 
@@ -129,19 +144,22 @@ def register_student():
                 phone=request.form['phone'],
                 address=request.form['address'],
                 previous_school=request.form['previous_school'],
-                school_time=request.form['school_time'],  # Add this line
+                school_time=request.form['school_time'],
                 ijazah_file=ijazah_filename,
                 foto_file=foto_filename,
                 parent_name=request.form['parent_name'],
                 parent_phone=request.form['parent_phone'],
                 parent_occupation=request.form['parent_occupation'],
+                faculty=request.form['faculty'],
+                major=request.form['major'],
+                religion=request.form['religion'],
                 status='pending'
             )
             
             db.session.add(new_registration)
             db.session.commit()
             
-            flash('Pendaftaran berhasil dikirim! Silakan pantau status pendaftaran Anda.', 'success'-'permanent')
+            flash('Pendaftaran berhasil dikirim! Silakan pantau status pendaftaran Anda.', 'success permanent')
             return redirect(url_for('user_dashboard'))
             
         except Exception as e:
@@ -253,7 +271,7 @@ def upload_payment(reg_id):
         db.session.add(notification)
         db.session.commit()
         
-        flash('Bukti pembayaran berhasil diupload!', 'success'-'permanent')
+        flash('Bukti pembayaran berhasil diupload!', 'success permanent')
         return redirect(url_for('user_dashboard'))
         
     flash('Format file tidak diizinkan!', 'danger')
@@ -291,7 +309,7 @@ def update_payment(reg_id):
         db.session.add(notification)
         db.session.commit()
         
-        flash('Status pembayaran berhasil diperbarui!', 'success'-'permanent')
+        flash('Status pembayaran berhasil diperbarui!', 'success permanent')
         return redirect(url_for('view_registration', id=reg_id))
     
     flash('Status pembayaran tidak valid!', 'danger')
@@ -309,6 +327,56 @@ def pembayaran():
         return redirect(url_for('registration_form'))
         
     return render_template('pembayaran.html', registration=registration)
+
+@app.route('/update_avatar', methods=['POST'])
+def update_avatar():
+    if 'user_id' not in session:
+        flash('Silakan login terlebih dahulu!', 'warning')
+        return redirect(url_for('auth.login'))
+        
+    if 'avatar' not in request.files:
+        flash('Tidak ada file yang dipilih!', 'danger')
+        return redirect(url_for('user_dashboard'))
+        
+    file = request.files['avatar']
+    if file.filename == '':
+        flash('Tidak ada file yang dipilih!', 'danger')
+        return redirect(url_for('user_dashboard'))
+        
+    if file and allowed_avatar_file(file.filename):
+        # Delete old avatar if it's not the default
+        user = User.query.get(session['user_id'])
+        if user.avatar != 'default-avatar.png':
+            old_avatar = os.path.join(app.config['AVATAR_FOLDER'], user.avatar)
+            if os.path.exists(old_avatar):
+                os.remove(old_avatar)
+        
+        # Save new avatar
+        filename = secure_filename(f"avatar_{session['user_id']}_{int(datetime.utcnow().timestamp())}.{file.filename.rsplit('.', 1)[1].lower()}")
+        file.save(os.path.join(app.config['AVATAR_FOLDER'], filename))
+        
+        # Update user avatar in database
+        user.avatar = filename
+        db.session.commit()
+        
+        flash('Avatar berhasil diperbarui!', 'success')
+        return redirect(url_for('user_dashboard'))
+        
+    flash('Format file tidak diizinkan! Gunakan PNG, JPG, atau JPEG.', 'danger')
+    return redirect(url_for('user_dashboard'))
+
+@app.route('/progress_tracking')
+def progress_tracking():
+    if 'user_id' not in session:
+        flash('Silakan login terlebih dahulu!', 'warning')
+        return redirect(url_for('auth.login'))
+        
+    registration = Registration.query.filter_by(user_id=session['user_id']).first()
+    user = User.query.get(session['user_id'])
+    
+    return render_template('progress_tracking.html', 
+                         registration=registration,
+                         user=user)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

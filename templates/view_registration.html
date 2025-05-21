@@ -80,6 +80,30 @@
                         {% endif %}
                     </td>
                 </tr>
+                <tr>
+                    <th>Fakultas</th>
+                    <td>
+                        {% if registration.faculty == 'teknik' %}
+                            Fakultas Teknik
+                        {% elif registration.faculty == 'ekonomi' %}
+                            Fakultas Ekonomi
+                        {% elif registration.faculty == 'hukum' %}
+                            Fakultas Hukum
+                        {% elif registration.faculty == 'kedokteran' %}
+                            Fakultas Kedokteran
+                        {% elif registration.faculty == 'fisip' %}
+                            Fakultas Ilmu Sosial dan Politik
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Program Studi</th>
+                    <td>{{ registration.major }}</td>
+                </tr>
+                <tr>
+                    <th>Agama</th>
+                    <td>{{ registration.religion }}</td>
+                </tr>
             </table>
         </div>
 

@@ -14,12 +14,14 @@ class User(db.Model):
     role = db.Column(db.String(20), default='user')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     registrations = db.relationship('Registration', backref='user', lazy=True)
+    avatar = db.Column(db.String(255), default='default-avatar.png')  # Add this field
 
-    def __init__(self, username, email, password, role='user'):
+    def __init__(self, username, email, password, role='user', avatar='default-avatar.png'):  # Update the init method
         self.username = username
         self.email = email
         self.set_password(password)
         self.role = role
+        self.avatar = avatar
 
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
@@ -102,11 +104,14 @@ class Registration(db.Model):
     payment_proof = db.Column(db.String(255), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    faculty = db.Column(db.String(100), nullable=False)
+    major = db.Column(db.String(100), nullable=False)
+    religion = db.Column(db.String(50), nullable=False)
 
     def __init__(self, user_id, full_name, birth_date, gender, phone, address, 
                  previous_school, school_time, ijazah_file, foto_file, parent_name, 
-                 parent_phone, parent_occupation, status='pending', 
-                 payment_status='unpaid', payment_amount=0.0):
+                 parent_phone, parent_occupation, faculty, major, religion,
+                 status='pending', payment_status='unpaid', payment_amount=0.0):
         self.user_id = user_id
         self.full_name = full_name
         self.birth_date = birth_date
@@ -120,31 +125,21 @@ class Registration(db.Model):
         self.parent_name = parent_name
         self.parent_phone = parent_phone
         self.parent_occupation = parent_occupation
+        self.faculty = faculty
+        self.major = major
+        self.religion = religion
         self.status = status
         self.payment_status = payment_status
         self.payment_amount = payment_amount
 
     def to_dict(self):
-        return {
-            'id': self.id,
-            'user_id': self.user_id,
-            'full_name': self.full_name,
-            'birth_date': self.birth_date.strftime('%Y-%m-%d'),
-            'gender': self.gender,
-            'phone': self.phone,
-            'address': self.address,
-            'previous_school': self.previous_school,
-            'school_time': self.school_time,
-            'ijazah_file': self.ijazah_file,
-            'foto_file': self.foto_file,
-            'parent_name': self.parent_name,
-            'parent_phone': self.parent_phone,
-            'parent_occupation': self.parent_occupation,
-            'status': self.status,
-            'payment_status': self.payment_status,
-            'payment_amount': self.payment_amount,
-            'created_at': self.created_at.strftime('%Y-%m-%d %H:%M:%S')
-        }
+        data = super().to_dict()
+        data.update({
+            'faculty': self.faculty,
+            'major': self.major,
+            'religion': self.religion
+        })
+        return data
 
 class Notification(db.Model):
     __tablename__ = 'notifications'

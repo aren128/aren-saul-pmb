@@ -12,15 +12,15 @@ def register():
         confirm_password = request.form['confirm_password']
 
         if password != confirm_password:
-            flash('Password tidak cocok!', 'danger-permanent')
+            flash('Password tidak cocok!', 'danger permanent')
             return render_template('auth/register.html')
 
         if User.get_by_username(username):
-            flash('Username sudah digunakan!', 'danger-permanent')
+            flash('Username sudah digunakan!', 'danger permanent')
             return render_template('auth/register.html')
 
         if User.get_by_email(email):
-            flash('Email sudah terdaftar!', 'danger-permanent')
+            flash('Email sudah terdaftar!', 'danger permanent')
             return render_template('auth/register.html')
 
         try:
@@ -51,16 +51,16 @@ def login():
             session['user_id'] = user.id
             session['username'] = user.username
             session['role'] = user.role
-            flash('Login berhasil!', 'success-permanent')
+            flash('Login berhasil!', 'success permanent')
             if user.is_admin():
                 return redirect(url_for('admin_dashboard'))
             return redirect(url_for('user_dashboard'))
-        flash('Username atau password salah!', 'danger-permanent')
+        flash('Username atau password salah!', 'danger permanent')
 
     return render_template('auth/login.html')
 
 @auth.route('/logout')
 def logout():
     session.clear()
-    flash('Berhasil logout!', 'success-permanent')
+    flash('Berhasil logout!', 'success permanent')
     return redirect(url_for('auth.login'))
