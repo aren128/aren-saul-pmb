@@ -1,6 +1,200 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+    <style>
+        .atm-card {
+            width: 100%;
+            max-width: 400px;
+            height: 220px;
+            background: linear-gradient(135deg, #0033a0 0%, #005bea 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+            padding: 20px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .card-chip {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(135deg, #d4af37 0%, #f9d423 100%);
+            border-radius: 8px;
+            padding: 6px;
+        }
+        
+        .chip-line {
+            height: 4px;
+            background-color: rgba(0, 0, 0, 0.3);
+            margin: 5px 0;
+            border-radius: 2px;
+        }
+        
+        .bank-name {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .card-number {
+            position: absolute;
+            top: 85px;
+            left: 20px;
+            font-size: 19px;
+            letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .card-holder {
+            position: absolute;
+            bottom: 50px;
+            left: 20px;
+        }
+        
+        .card-holder-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+        
+        .card-holder-name {
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        
+        .card-valid {
+            position: absolute;
+            bottom: 50px;
+            right: 20px;
+            text-align: right;
+        }
+        
+        .card-valid-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+        
+        .card-logo {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 24px;
+        }
+        
+        .copy-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .card-shine {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+        
+        .card-amount {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="card-amount text-center">Total: Rp 500.000,00</div>
+        
+        <div class="atm-card">
+            <div class="card-shine"></div>
+            
+            <!-- Chip -->
+            <div class="card-chip">
+                <div class="chip-line"></div>
+                <div class="chip-line"></div>
+                <div class="chip-line"></div>
+            </div>
+            
+            <!-- Bank Name -->
+            <div class="bank-name">BRI</div>
+            
+            <!-- Card Number -->
+            <div class="card-number">1234 5678 9012 3456</div>
+            
+            <!-- Card Holder -->
+            <div class="card-holder">
+                <div class="card-holder-label">Pemilik Rekening</div>
+                <div class="card-holder-name">Admin Karsa</div>
+            </div>
+            
+            <!-- Valid Thru -->
+            <div class="card-valid">
+                <div class="card-valid-label">Informasi</div>
+                <div>Pembayaran Sekolah</div>
+            </div>
+            
+            <!-- Card Network Logo -->
+            <div class="card-logo">
+                <i class="fas fa-university"></i>
+            </div>
+            
+            <!-- Copy Button -->
+            <button class="copy-btn" onclick="copyToClipboard('1234567890123456')" title="Salin Nomor Rekening">
+                <i class="fas fa-copy"></i>
+            </button>
+        </div>
+        
+        <div class="alert alert-info">
+            <p class="mb-1"><i class="fas fa-info-circle me-2"></i> Silakan transfer sesuai nominal di atas ke rekening yang tertera pada kartu.</p>
+            <p class="mb-0">Setelah transfer, jangan lupa untuk mengupload bukti pembayaran.</p>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    alert('Nomor rekening berhasil disalin: ' + text);
+                })
+                
+                }
+        
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 <div class="card">
     <div class="card-header bg-primary text-white">
         <h4><i class="fas fa-money-bill me-2"></i>Informasi Pembayaran</h4>
@@ -22,7 +216,7 @@
                                         <div>
                                             <strong>Bank BRI</strong><br>
                                             No. Rekening: 1234-5678-9012-3456<br>
-                                            Atas Nama: Sekolah XYZ
+                                            Atas Nama: Universitas Karya Bangsa
                                         </div>
                                         <button class="btn btn-outline-primary btn-sm" 
                                                 onclick="copyToClipboard('1234567890123456')">
@@ -135,15 +329,14 @@ document.addEventListener('DOMContentLoaded', function() {
         paymentDateInput.value = now.toISOString().slice(0,16);
     }
 
-    // Click-to-hide for alerts (optional)
+    // Remove the click-to-hide functionality for alerts
+    // Alerts will now remain visible until explicitly closed with the close button
+    
+    // Add permanent class to all alerts to ensure they don't auto-disappear
     document.querySelectorAll('.alert').forEach(function(alert) {
-        alert.style.cursor = 'pointer';
-        alert.addEventListener('click', function(event) {
-            if (!event.target.classList.contains('btn-close')) {
-                var bsAlert = new bootstrap.Alert(this);
-                bsAlert.close();
-            }
-        });
+        if (!alert.classList.contains('alert-permanent')) {
+            alert.classList.add('alert-permanent');
+        }
     });
 });
 
@@ -157,10 +350,30 @@ function copyToClipboard(text) {
                 btn.innerHTML = originalText;
             }, 2000);
         })
-        .catch((err) => {
-            console.error('Failed to copy text:', err);
-            alert('Gagal menyalin teks. Silakan coba lagi.');
+}
+
+    // Click-to-hide for alerts (optional)
+    document.querySelectorAll('.alert').forEach(function(alert) {
+        alert.style.cursor = 'pointer';
+        alert.addEventListener('click', function(event) {
+            if (!event.target.classList.contains('btn-close')) {
+                var bsAlert = new bootstrap.Alert(this);
+                bsAlert.close();
+            }
         });
+    });
+
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text)
+        .then(() => {
+            const btn = event.target.closest('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Tersalin!';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+            }, 2000);
+        })
 }
 </script>
 {% endblock %}

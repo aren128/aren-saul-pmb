@@ -938,36 +938,25 @@
 <!-- Hero Section -->
 <div class="jumbotron">
     <div class="container jumbotron-content">
-        <h1 class="display-4">Selamat Datang di PMB Sekolah</h1>
+        <h1 class="display-4">Selamat Datang di PMB Universitas Karya Bangsa</h1>
         <p class="lead">Langkah pertama menuju <span class="typewriter-container"><span id="typewriter">Masa Depan</span></span> yang cemerlang. Sistem Penerimaan Murid Baru yang dirancang untuk memudahkan pendaftaran dan membantu calon siswa meraih impian pendidikan mereka.</p>
         <div class="d-flex mt-4 gap-3">
-            <a href="#panduan" class="btn btn-hero btn-primary">Mulai Pendaftaran</a>
-            <a href="#statistik" class="btn btn-hero btn-outline-light">Pelajari Lebih Lanjut</a>
+            {% if not session.get('user_id') %}
+                <a href="{{ url_for('auth.register') }}" class="btn btn-hero btn-primary">
+                    <i class="fas fa-user-plus me-2"></i>Register
+                </a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-hero btn-light">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+            {% else %}
+                <a href="{{ url_for('user_dashboard') }}" class="btn btn-hero btn-primary">
+                    <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                </a>
+            {% endif %}
         </div>
     </div>
 </div>
 
-<div class="container">
-    <!-- Statistics Section -->
-    <div class="row mb-5 fade-in" id="statistik">
-        <div class="col-12">
-            <div class="section-title">
-                <h2>Statistik PMB</h2>
-                <p class="section-subtitle">Data dan fakta tentang penerimaan siswa baru tahun ini</p>
-            </div>
-        </div>
-
-        <div class="col-12">
-            <div class="stats-container">
-                <div class="row g-4">
-                    <div class="col-md-3 col-sm-6">
-                        <div class="stat-item">
-                            <i class="fas fa-user-graduate stat-icon"></i>
-                            <div class="counter" data-target="850">0</div>
-                            <h5>Pendaftar</h5>
-                        </div>
-                    </div>
-                    <div
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -1188,11 +1177,7 @@
         }
 </style>
 
-<div class="jumbotron">
-    <h1 class="display-4">Selamat Datang di PMB Sekolah</h1>
-    <p class="lead">Sistem Penerimaan Murid Baru untuk masa depan pendidikan yang lebih baik.</p>
-    <hr class="my-4">
-</div>
+
 
 <div class="row">
     <div class="col-md-8">
@@ -1254,25 +1239,6 @@
                 </ul>
             </div>
         </div>
-        <div class="card mt-3">
-            <div class="card-header bg-success text-white">
-                <h4>Mulai Sekarang</h4>
-            </div>
-            <div class="card-body text-center">
-                {% if not session.get('user_id') %}
-                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg mb-2">Register</a>
-                    <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg">Login</a>
-                {% elif session.get('role') == 'admin' %}
-                    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-danger btn-lg">
-                        <i class="fas fa-lock me-2"></i>Admin Dashboard
-                    </a>
-                {% else %}
-                    <a href="{{ url_for('user_dashboard') }}" class="btn btn-primary btn-lg">Dashboard Saya</a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="row mt-4">
     <div class="col-12">
