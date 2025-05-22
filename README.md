@@ -1,9 +1,6 @@
 # 🎓 Sistem Penerimaan Mahasiswa Baru (PMB)
 
-<div align="center">
-  <img src="static/images/screenshots/banner.png" alt="PMB Banner" width="100%"/>
-  <p>Sistem Informasi PMB Universitas Karya Bangsa</p>
-</div>
+
 
 ## 👨‍💻 Developer
 **Aren Saul**
