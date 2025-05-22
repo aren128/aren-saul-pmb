@@ -10,8 +10,23 @@
 <p align="center">Tampilan halaman utama sistem PMB</p>
 
 ### Statistik Pendaftaran
-![Statistik](static/images/screenshots/landing6.png)
-<p align="center">Dashboard statistik pendaftaran</p>
+<div align="center">
+  <!-- Overview statistics -->
+  <img src="static/images/screenshots/landing6.png" alt="Statistik Overview" width="100%" style="margin-bottom: 20px"/>
+  
+  <!-- Detailed statistics in 2x2 grid -->
+  <div style="margin-bottom: 20px;">
+    <img src="static/images/screenshots/1.png" alt="Statistik 1" width="45%" style="margin-right: 10px"/>
+    <img src="static/images/screenshots/2.png" alt="Statistik 2" width="45%"/>
+  </div>
+  
+  <div>
+    <img src="static/images/screenshots/3.png" alt="Statistik 3" width="45%" style="margin-right: 10px"/>
+    <img src="static/images/screenshots/4.png" alt="Statistik 4" width="45%"/>
+  </div>
+  
+  <p align="center">Dashboard statistik pendaftaran</p>
+</div>
 
 ### Program Studi
 ![Program Studi](static/images/screenshots/landing3.png)
@@ -19,8 +34,19 @@
 
 ### Alur Pendaftaran
 <div align="center">
-  <img src="static/images/screenshots/landing1.png" alt="Alur Pendaftaran 1" width="45%" style="margin-right: 10px"/>
-  <img src="static/images/screenshots/landing2.png" alt="Alur Pendaftaran 2" width="45%"/>
+  <!-- Row 1: First two images side by side -->
+  <div style="margin-bottom: 20px;">
+    <img src="static/images/screenshots/landing1.png" alt="Alur Pendaftaran 1" width="45%" style="margin-right: 10px"/>
+    <img src="static/images/screenshots/landing2.png" alt="Alur Pendaftaran 2" width="45%"/>
+  </div>
+  
+  <!-- Row 2: Three additional images -->
+  <div>
+    <img src="static/images/screenshots/landing11.png" alt="Alur Pendaftaran 3" width="30%" style="margin-right: 10px"/>
+    <img src="static/images/screenshots/landing12.png" alt="Alur Pendaftaran 4" width="30%" style="margin-right: 10px"/>
+    <img src="static/images/screenshots/landing13.png" alt="Alur Pendaftaran 5" width="30%"/>
+  </div>
+  
   <p align="center">Langkah-langkah pendaftaran mahasiswa baru</p>
 </div>
 
