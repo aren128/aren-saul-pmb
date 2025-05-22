@@ -5,7 +5,7 @@
 ## 👨‍💻 Developer
 **Aren Saul**
 - Email: arensaul51@gmail.com
-- GitHub: [github.com/arensaul](https://github.com/arensaul)
+- GitHub: [github.com/arensaul](https://github.com/aren128)
 
 ## 📸 Screenshot Aplikasi
 
