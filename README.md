@@ -1,30 +1,40 @@
-# Sistem Penerimaan Mahasiswa Baru (PMB)
+# 🎓 Sistem Penerimaan Mahasiswa Baru (PMB)
 
 ## 📋 Overview
-Sistem informasi penerimaan mahasiswa baru berbasis web yang dibangun menggunakan Flask. Sistem ini mengelola seluruh proses penerimaan mahasiswa dari pendaftaran hingga verifikasi pembayaran.
+Sistem informasi penerimaan mahasiswa baru berbasis web menggunakan Flask. Sistem ini menyediakan manajemen lengkap untuk proses pendaftaran mahasiswa baru, dari registrasi hingga pembayaran dan verifikasi.
 
 ## ✨ Fitur Utama
 - 🔐 Autentikasi Multi-User (Mahasiswa & Admin)
 - 📝 Formulir Pendaftaran Online
-- 📎 Upload Dokumen (Foto & Ijazah)
-- 💳 Proses & Verifikasi Pembayaran
-- 📊 Dashboard Admin
-- 🔄 Update Status Real-time
-- 📱 Responsif Mobile-Friendly
-- 📧 Notifikasi Otomatis
+- 📎 Upload & Verifikasi Dokumen
+  - Pas foto 4x6
+  - Ijazah/SKL
+  - Kartu identitas
+- 💳 Sistem Pembayaran & Verifikasi
+- 📊 Dashboard Admin & Statistik
+- 📱 Progress Tracking Realtime
+- 📨 Sistem Notifikasi Terintegrasi
+- 👤 Manajemen Profil & Avatar
+- 📊 Visualisasi Data & Statistik
 
 ## 🛠 Tech Stack
 - **Backend:** Python Flask
-- **Database:** SQLAlchemy (MySQL)
-- **Frontend:** Bootstrap 5, HTML5, CSS3, JavaScript
-- **UI Components:** Font Awesome 5
-- **Security:** Flask-Login, Werkzeug Security
+- **Database:** SQLAlchemy dengan SQLite/MySQL
+- **Frontend:** Bootstrap 5, HTML5, CSS3
+- **JavaScript Libraries:** 
+  - Font Awesome 5
+  - Chart.js (visualisasi data)
+  - jQuery
+- **Keamanan:** 
+  - Flask-Login
+  - Werkzeug Security
+  - Safe file upload handling
 
 ## 🚀 Instalasi
 
 ### Prasyarat
 - Python 3.8+
-- MySQL/MariaDB
+- pip (Python package manager)
 - Git
 
 ### Langkah Instalasi
@@ -38,7 +48,10 @@ cd pmb-system
 2. Buat virtual environment
 ```bash
 python -m venv venv
+# Windows
 venv\Scripts\activate
+# Linux/Mac
+source venv/bin/activate
 ```
 
 3. Install dependencies
@@ -46,11 +59,13 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Konfigurasi database
+4. Konfigurasi environment
 ```bash
-# Buat file .env dan isi dengan konfigurasi berikut
-DATABASE_URL=mysql://username:password@localhost/pmb_db
+# Buat file .env
+FLASK_APP=run.py
+FLASK_ENV=development
 SECRET_KEY=your-secret-key
+DATABASE_URL=sqlite:///pmb.db
 ```
 
 5. Inisialisasi database
@@ -60,64 +75,103 @@ flask db migrate
 flask db upgrade
 ```
 
-6. Jalankan aplikasi
+6. Buat direktori upload
+```bash
+mkdir -p static/uploads/payment_proofs
+mkdir -p static/images/avatars
+```
+
+7. Jalankan aplikasi
 ```bash
 python run.py
 ```
 
-## 📱 Cara Penggunaan
+## 📱 Panduan Pengguna
 
-### Untuk Calon Mahasiswa
-1. Akses aplikasi di `http://localhost:5000`
-2. Registrasi akun baru
-3. Login dan lengkapi formulir pendaftaran
-4. Upload dokumen yang diperlukan:
+### Calon Mahasiswa
+1. **Registrasi & Login**
+   - Daftar akun baru
+   - Login ke sistem
+   - Kelola profil dan avatar
+
+2. **Pengisian Formulir**
+   - Data pribadi
+   - Data akademik
+   - Informasi orang tua
+   - Pilihan fakultas & jurusan
+
+3. **Upload Dokumen**
    - Pas foto 4x6
-   - Ijazah/SKL
-   - Kartu identitas
-5. Lakukan pembayaran dan upload bukti
-6. Pantau status pendaftaran di dashboard
+   - Scan ijazah/SKL
+   - Dokumen pendukung
 
-### Untuk Admin
-1. Akses halaman admin di `http://localhost:5000/admin`
-2. Login dengan kredensial admin
-3. Kelola data pendaftar
-4. Verifikasi dokumen dan pembayaran
-5. Update status pendaftaran
+4. **Pembayaran**
+   - Lihat instruksi pembayaran
+   - Upload bukti transfer
+   - Pantau status verifikasi
+
+5. **Progress Tracking**
+   - Cek status pendaftaran
+   - Lihat notifikasi
+   - Pantau progres verifikasi
+
+### Admin
+1. **Dashboard**
+   - Statistik pendaftaran
+   - Grafik distribusi fakultas
+   - Monitoring pembayaran
+
+2. **Manajemen Pendaftar**
+   - Lihat detail pendaftar
+   - Verifikasi dokumen
+   - Update status pendaftaran
+
+3. **Verifikasi Pembayaran**
+   - Cek bukti pembayaran
+   - Konfirmasi pembayaran
+   - Kirim notifikasi
 
 ## 📁 Struktur Proyek
 ```
 pmb/
-├── auth/                  # Autentikasi
+├── auth/                     # Autentikasi
 │   ├── __init__.py
 │   └── routes.py
-├── static/               # Aset statis
+├── static/                   # Aset statis
 │   ├── css/
+│   │   └── style.css
 │   ├── js/
-│   └── uploads/         # File upload
-├── templates/           # Template HTML
+│   │   └── main.js
+│   ├── uploads/
+│   │   └── payment_proofs/
+│   └── images/
+│       └── avatars/
+├── templates/                # Template HTML
 │   ├── auth/
-│   └── *.html
-├── models.py           # Model database
-├── run.py             # Entry point
-└── requirements.txt   # Dependencies
+│   │   ├── login.html
+│   │   └── register.html
+│   ├── admin_dashboard.html
+│   ├── dashboard.html
+│   ├── layout.html
+│   ├── pembayaran.html
+│   └── registration_form.html
+├── models.py                # Model database
+├── run.py                   # Entry point
+└── requirements.txt         # Dependencies
 ```
 
 ## 💡 Fitur Mendatang
-- [ ] Integrasi pembayaran online
+- [ ] Integrasi payment gateway
 - [ ] Sistem ujian online
 - [ ] Export data ke Excel/PDF
-- [ ] API untuk integrasi sistem lain
-- [ ] Dashboard analitik
+- [ ] API untuk integrasi eksternal
+- [ ] Dashboard analitik lanjutan
 
 ## 🤝 Kontribusi
-Kontribusi selalu diterima. Untuk perubahan besar, silakan buka issue terlebih dahulu untuk mendiskusikan perubahan yang diinginkan.
+Kontribusi selalu diterima. Untuk perubahan besar, silakan buka issue terlebih dahulu.
 
 ## 📝 Lisensi
 [MIT](https://choosealicense.com/licenses/mit/)
-
-## 📞 Kontak
-Aren Saul - za086268@gmail.com
 
 ## 🙏 Acknowledgments
 - Flask Team
