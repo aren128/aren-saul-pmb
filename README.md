@@ -1,5 +1,27 @@
 # 🎓 Sistem Penerimaan Mahasiswa Baru (PMB)
 
+## 📸 Screenshot Aplikasi
+
+### Halaman Utama
+![Halaman Utama](static/images/screenshots/landing.png)
+<p align="center">Tampilan halaman utama sistem PMB</p>
+
+### Statistik Pendaftaran
+![Statistik](static/images/screenshots/statistik.png)
+<p align="center">Dashboard statistik pendaftaran</p>
+
+### Program Studi
+![Program Studi](static/images/screenshots/prodi.png)
+<p align="center">Daftar program studi yang tersedia</p>
+
+### Alur Pendaftaran
+![Alur Pendaftaran](static/images/screenshots/alur.png)
+<p align="center">Langkah-langkah pendaftaran mahasiswa baru</p>
+
+### Daftar Pendaftar
+![Daftar Pendaftar](static/images/screenshots/pendaftar.png)
+<p align="center">Tabel daftar calon mahasiswa yang sudah mendaftar</p>
+
 ## 📋 Overview
 Sistem informasi penerimaan mahasiswa baru berbasis web menggunakan Flask. Sistem ini menyediakan manajemen lengkap untuk proses pendaftaran mahasiswa baru, dari registrasi hingga pembayaran dan verifikasi.
 

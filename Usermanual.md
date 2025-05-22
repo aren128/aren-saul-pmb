@@ -16,8 +16,7 @@
 
 ### Dokumen yang Diperlukan
 - Pas foto 4x6 (format JPG/PNG)
-- Scan Ijazah/SKL (format PDF)
-- Scan KTP/Kartu Pelajar (format PDF)
+- Scan Ijazah/SKL (format JPG/PNG)
 - Bukti pembayaran pendaftaran
 
 ## 👤 Panduan Calon Mahasiswa
@@ -48,7 +47,7 @@
 ### 3. Upload Dokumen
 1. Masuk ke menu "Upload Dokumen"
 2. Siapkan file sesuai ketentuan:
-   - Format: JPG/PNG/PDF
+   - Format: JPG/PNG
    - Ukuran max: 2MB
 3. Upload dokumen yang diminta
 4. Pastikan preview dokumen bisa dibuka
@@ -74,7 +73,7 @@
 ### 1. Login Admin
 1. Akses `/admin/login`
 2. Masukkan kredensial
-3. Verifikasi 2 langkah
+
 
 ### 2. Verifikasi Pendaftar
 1. Buka "Daftar Pendaftar"
@@ -96,8 +95,7 @@
 ## ❓ FAQ
 
 ### Pendaftaran
-Q: Bagaimana jika lupa password?
-A: Gunakan fitur "Lupa Password" di halaman login
+
 
 Q: Berapa lama proses verifikasi?
 A: 1x24 jam kerja
