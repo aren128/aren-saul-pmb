@@ -1,5 +1,9 @@
 # 🎓 Sistem Penerimaan Mahasiswa Baru (PMB)
 
+## 👨‍💻 Developer
+**Aren Saul**
+- Email: arensaul51@gmail.com
+
 ## 📸 Screenshot Aplikasi
 
 ### Halaman Utama
@@ -225,11 +229,13 @@ pmb/
 ## 🤝 Kontribusi
 Kontribusi selalu diterima. Untuk perubahan besar, silakan buka issue terlebih dahulu.
 
-## 📝 Lisensi
-[MIT](https://choosealicense.com/licenses/mit/)
-
 ## 🙏 Acknowledgments
 - Flask Team
 - Bootstrap Team
 - Font Awesome
+- Aren Saul (Developer)
 - Seluruh kontributor
+
+## 📝 Lisensi
+[MIT](https://choosealicense.com/licenses/mit/)
+Copyright (c) 2024 Aren Saul
