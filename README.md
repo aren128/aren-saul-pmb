@@ -18,9 +18,11 @@
 <p align="center">Daftar program studi yang tersedia</p>
 
 ### Alur Pendaftaran
-![Alur Pendaftaran](static/images/screenshots/landing1.png)(static/images/screenshots/landing2.png)
-
-<p align="center">Langkah-langkah pendaftaran mahasiswa baru</p>
+<div align="center">
+  <img src="static/images/screenshots/landing1.png" alt="Alur Pendaftaran 1" width="45%" style="margin-right: 10px"/>
+  <img src="static/images/screenshots/landing2.png" alt="Alur Pendaftaran 2" width="45%"/>
+  <p align="center">Langkah-langkah pendaftaran mahasiswa baru</p>
+</div>
 
 ### Daftar Pendaftar
 ![Daftar Pendaftar](static/images/screenshots/landing7.png)
