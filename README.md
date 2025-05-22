@@ -59,6 +59,16 @@
 
 <p align="center">Tabel daftar calon mahasiswa yang sudah mendaftar</p>
 
+### Pembayaran
+<div align="center">
+  <!-- Payment Information -->
+  <img src="static/images/screenshots/p.png" alt="Informasi Pembayaran" width="100%" style="margin-bottom: 20px"/>
+  
+  
+  
+  <p align="center">Sistem pembayaran dan verifikasi pendaftaran</p>
+</div>
+
 ## 📋 Overview
 Sistem informasi penerimaan mahasiswa baru berbasis web menggunakan Flask. Sistem ini menyediakan manajemen lengkap untuk proses pendaftaran mahasiswa baru, dari registrasi hingga pembayaran dan verifikasi.
 
