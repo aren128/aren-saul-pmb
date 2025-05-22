@@ -1,90 +1,112 @@
 # 🎓 Sistem Penerimaan Mahasiswa Baru (PMB)
 
+<div align="center">
+  <img src="static/images/screenshots/banner.png" alt="PMB Banner" width="100%"/>
+  <p>Sistem Informasi PMB Universitas Karya Bangsa</p>
+</div>
+
 ## 👨‍💻 Developer
 **Aren Saul**
 - Email: arensaul51@gmail.com
+- GitHub: [github.com/arensaul](https://github.com/arensaul)
 
 ## 📸 Screenshot Aplikasi
 
-### Halaman Utama
-![Halaman Utama](static/images/screenshots/landing.png)
-
-
-
-<p align="center">Tampilan halaman utama sistem PMB</p>
-
-### Statistik Pendaftaran
+### 🏠 Halaman Utama
 <div align="center">
-  <!-- Overview statistics -->
-  <img src="static/images/screenshots/landing6.png" alt="Statistik Overview" width="100%" style="margin-bottom: 20px"/>
+  <img src="static/images/screenshots/landing.png" alt="Homepage" width="100%"/>
+  <p>Tampilan halaman utama sistem PMB</p>
+</div>
+
+### 📊 Statistik Pendaftaran
+<div align="center">
+  <!-- Overview -->
+  <img src="static/images/screenshots/landing6.png" alt="Statistics Overview" width="100%" style="margin-bottom: 20px"/>
   
-  <!-- Detailed statistics in 2x2 grid -->
+  <!-- Statistics Grid -->
   <div style="margin-bottom: 20px;">
-    <img src="static/images/screenshots/1.png" alt="Statistik 1" width="45%" style="margin-right: 10px"/>
-    <img src="static/images/screenshots/2.png" alt="Statistik 2" width="45%"/>
+    <img src="static/images/screenshots/1.png" alt="Statistics 1" width="45%" style="margin-right: 10px"/>
+    <img src="static/images/screenshots/2.png" alt="Statistics 2" width="45%"/>
   </div>
-  
-  <div>
-    <img src="static/images/screenshots/3.png" alt="Statistik 3" width="45%" style="margin-right: 10px"/>
-    <img src="static/images/screenshots/4.png" alt="Statistik 4" width="45%"/>
-  </div>
-  
-  <p align="center">Dashboard statistik pendaftaran</p>
-</div>
-
-### Program Studi
-![Program Studi](static/images/screenshots/landing3.png)
-<p align="center">Daftar program studi yang tersedia</p>
-
-### Alur Pendaftaran
-<div align="center">
-  <!-- Row 1: First two images side by side -->
   <div style="margin-bottom: 20px;">
-    <img src="static/images/screenshots/landing1.png" alt="Alur Pendaftaran 1" width="45%" style="margin-right: 10px"/>
-    <img src="static/images/screenshots/landing2.png" alt="Alur Pendaftaran 2" width="45%"/>
+    <img src="static/images/screenshots/3.png" alt="Statistics 3" width="45%" style="margin-right: 10px"/>
+    <img src="static/images/screenshots/4.png" alt="Statistics 4" width="45%"/>
   </div>
-  
-  <!-- Row 2: Three additional images -->
-  <div>
-    <img src="static/images/screenshots/landing11.png" alt="Alur Pendaftaran 3" width="30%" style="margin-right: 10px"/>
-    <img src="static/images/screenshots/landing12.png" alt="Alur Pendaftaran 4" width="30%" style="margin-right: 10px"/>
-    <img src="static/images/screenshots/landing13.png" alt="Alur Pendaftaran 5" width="30%"/>
-  </div>
-  
-  <p align="center">Langkah-langkah pendaftaran mahasiswa baru</p>
+  <p>Dashboard statistik pendaftaran realtime</p>
 </div>
 
-### Daftar Pendaftar
-![Daftar Pendaftar](static/images/screenshots/landing7.png)
-
-<p align="center">Tabel daftar calon mahasiswa yang sudah mendaftar</p>
-
-### Pembayaran
+### 🎓 Program Studi
 <div align="center">
-  <!-- Payment Information -->
-  <img src="static/images/screenshots/p.png" alt="Informasi Pembayaran" width="100%" style="margin-bottom: 20px"/>
-  
-  
-  
-  <p align="center">Sistem pembayaran dan verifikasi pendaftaran</p>
+  <img src="static/images/screenshots/landing3.png" alt="Study Programs" width="100%"/>
+  <p>Daftar lengkap program studi yang tersedia</p>
 </div>
 
-## 📋 Overview
-Sistem informasi penerimaan mahasiswa baru berbasis web menggunakan Flask. Sistem ini menyediakan manajemen lengkap untuk proses pendaftaran mahasiswa baru, dari registrasi hingga pembayaran dan verifikasi.
+### 📝 Alur Pendaftaran
+<div align="center">
+  <!-- Registration Steps Row 1 -->
+  <div style="margin-bottom: 20px;">
+    <img src="static/images/screenshots/landing1.png" alt="Registration Step 1" width="45%" style="margin-right: 10px"/>
+    <img src="static/images/screenshots/landing2.png" alt="Registration Step 2" width="45%"/>
+  </div>
+  
+  <!-- Registration Steps Row 2 -->
+  <div style="margin-bottom: 20px;">
+    <img src="static/images/screenshots/landing11.png" alt="Registration Step 3" width="30%" style="margin-right: 10px"/>
+    <img src="static/images/screenshots/landing12.png" alt="Registration Step 4" width="30%" style="margin-right: 10px"/>
+    <img src="static/images/screenshots/landing13.png" alt="Registration Step 5" width="30%"/>
+  </div>
+  <p>Langkah-langkah pendaftaran mahasiswa baru</p>
+</div>
+
+### 👥 Daftar Pendaftar
+<div align="center">
+  <img src="static/images/screenshots/landing7.png" alt="Applicants List" width="100%"/>
+  <p>Tabel daftar calon mahasiswa yang sudah mendaftar</p>
+</div>
+
+### 💳 Pembayaran
+<div align="center">
+  <img src="static/images/screenshots/p.png" alt="Payment System" width="100%"/>
+  <p>Sistem pembayaran dan verifikasi pendaftaran</p>
+</div>
 
 ## ✨ Fitur Utama
-- 🔐 Autentikasi Multi-User (Mahasiswa & Admin)
-- 📝 Formulir Pendaftaran Online
-- 📎 Upload & Verifikasi Dokumen
-  - Pas foto 4x6
-  - Ijazah/SKL
-  - Kartu identitas
-- 💳 Sistem Pembayaran & Verifikasi
-- 📊 Dashboard Admin & Statistik
-- 📱 Progress Tracking Realtime
-- 📨 Sistem Notifikasi Terintegrasi
-- 👤 Manajemen Profil & Avatar
-- 📊 Visualisasi Data & Statistik
+- 🔐 **Autentikasi Multi-User**
+  - Login mahasiswa & admin
+  - Manajemen sesi
+  - Reset password
+- 📝 **Pendaftaran Online**
+  - Form wizard
+  - Validasi data
+  - Auto-save progress
+- 📎 **Manajemen Dokumen**
+  - Upload multi-file
+  - Preview dokumen
+  - Verifikasi otomatis
+- 💳 **Sistem Pembayaran**
+  - Multiple channel
+  - Verifikasi otomatis
+  - Notifikasi status
+- 📊 **Dashboard Admin**
+  - Statistik realtime
+  - Monitoring pendaftar
+  - Laporan pendaftaran
+- 📱 **Progress Tracking Realtime**
+  - Status pendaftaran
+  - Notifikasi
+  - Progres verifikasi
+- 📨 **Sistem Notifikasi Terintegrasi**
+  - Email
+  - SMS
+  - Notifikasi dalam aplikasi
+- 👤 **Manajemen Profil & Avatar**
+  - Update data diri
+  - Ganti password
+  - Upload foto profil
+- 📊 **Visualisasi Data & Statistik**
+  - Grafik interaktif
+  - Export data
+  - Filter dan drill-down data
 
 ## 🛠 Tech Stack
 - **Backend:** Python Flask
