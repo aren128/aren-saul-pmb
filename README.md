@@ -10,7 +10,7 @@
 <p align="center">Tampilan halaman utama sistem PMB</p>
 
 ### Statistik Pendaftaran
-![Statistik](static/images/screenshots/landing7.png)
+![Statistik](static/images/screenshots/landing6.png)
 <p align="center">Dashboard statistik pendaftaran</p>
 
 ### Program Studi
@@ -18,12 +18,12 @@
 <p align="center">Daftar program studi yang tersedia</p>
 
 ### Alur Pendaftaran
-![Alur Pendaftaran](static/images/screenshots/landing1.png)
-(static/images/screenshots/landing2.png)
+![Alur Pendaftaran](static/images/screenshots/landing1.png)(static/images/screenshots/landing2.png)
+
 <p align="center">Langkah-langkah pendaftaran mahasiswa baru</p>
 
 ### Daftar Pendaftar
-![Daftar Pendaftar](static/images/screenshots/landing6.png)
+![Daftar Pendaftar](static/images/screenshots/landing7.png)
 
 <p align="center">Tabel daftar calon mahasiswa yang sudah mendaftar</p>
 
