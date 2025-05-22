@@ -236,6 +236,4 @@ Kontribusi selalu diterima. Untuk perubahan besar, silakan buka issue terlebih d
 - Aren Saul (Developer)
 - Seluruh kontributor
 
-## 📝 Lisensi
-[MIT](https://choosealicense.com/licenses/mit/)
-Copyright (c) 2024 Aren Saul
+
